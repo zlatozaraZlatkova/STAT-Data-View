@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -6,12 +6,11 @@ import { Component, signal } from '@angular/core';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
-  isOpen = signal(false);
-  dashboardExpanded = signal(false);
+  @Input() isOpen: boolean = false;
 
-  toggle(): void {
-    this.isOpen.update(val => !val);
-  }
+  dashboardExpanded = signal(true);
+
+
   toggleDashboard(): void {
     this.dashboardExpanded.update(currentValue => !currentValue);
   }

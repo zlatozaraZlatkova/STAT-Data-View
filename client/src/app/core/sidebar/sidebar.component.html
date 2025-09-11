@@ -1,37 +1,84 @@
-<aside [class.hidden]="!isOpen()" [class.md:block]="true"
-    class="flex-shrink-0 w-64 bg-white border-r dark:border-gray-700 dark:bg-gray-900 transition-all duration-300 ease-in-out">
-    <div class="flex flex-col h-full">
-
-        <!-- Sidebar Navigation -->
-        <nav aria-label="Main" class="flex-1 px-2 py-4 space-y-2 overflow-y-hidden hover:overflow-y-auto">
-
-            <!-- Dashboard Section -->
-            <div class="group">
-                <button (click)="toggleDashboard()"
-                    class="flex items-center w-full p-2 text-gray-500 transition-colors rounded-md dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900 group-hover:bg-blue-100 dark:group-hover:bg-blue-900">
-                    <span aria-hidden="true">
-                        <mat-icon class="w-5 h-5">home</mat-icon>
-                    </span>
-                    <span class="ml-2 text-sm">Dashboard</span>
-                    <span class="ml-auto" aria-hidden="true">
-                        <mat-icon [class.rotate-180]="dashboardExpanded()"
-                            class="w-4 h-4 transition-transform transform">
-                            expand_more
-                        </mat-icon>
-                    </span>
-                </button>
-
-                <div [class.hidden]="!dashboardExpanded()" class="mt-2 space-y-2 px-7 transition-all duration-200">
-                    <a [routerLink]="'/main-content'"
-                        class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
-                        Main Dashboard
-                    </a>
-                    <a [routerLink]="'/analytics'"
-                        class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
-                        Analytics
-                    </a>
+  <div class="space-y-6">
+            
+            <!-- Recent Updates -->
+            <div class="bg-white rounded-lg p-6 card-shadow">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Updates</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-2 h-2 bg-stats-blue rounded-full mt-2"></div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Monthly employment data</p>
+                            <p class="text-xs text-gray-500">2 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-2 h-2 bg-stats-green rounded-full mt-2"></div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">GDP Q3 2025</p>
+                            <p class="text-xs text-gray-500">6 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-2 h-2 bg-stats-orange rounded-full mt-2"></div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Demographics report</p>
+                            <p class="text-xs text-gray-500">1 day ago</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </div>
-</aside>
+
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-lg p-6 card-shadow">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                <div class="space-y-3">
+                    <button class="w-full text-left p-3 rounded-lg border border-gray-200 hover:border-stats-blue hover:bg-stats-blue/5 transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-stats-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            <span class="text-sm font-medium">Download Data</span>
+                        </div>
+                    </button>
+                    <button class="w-full text-left p-3 rounded-lg border border-gray-200 hover:border-stats-green hover:bg-stats-green/5 transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-stats-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            <span class="text-sm font-medium">Create Report</span>
+                        </div>
+                    </button>
+                    <button class="w-full text-left p-3 rounded-lg border border-gray-200 hover:border-stats-orange hover:bg-stats-orange/5 transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-stats-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+                            </svg>
+                            <span class="text-sm font-medium">Share</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Data Sources -->
+            <div class="bg-white rounded-lg p-6 card-shadow">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Data Sources</h3>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Eurostat</span>
+                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">OECD</span>
+                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">National Bank</span>
+                        <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Labor Office</span>
+                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
