@@ -1,0 +1,37 @@
+<aside [class.hidden]="!isOpen()" [class.md:block]="true"
+    class="flex-shrink-0 w-64 bg-white border-r dark:border-gray-700 dark:bg-gray-900 transition-all duration-300 ease-in-out">
+    <div class="flex flex-col h-full">
+
+        <!-- Sidebar Navigation -->
+        <nav aria-label="Main" class="flex-1 px-2 py-4 space-y-2 overflow-y-hidden hover:overflow-y-auto">
+
+            <!-- Dashboard Section -->
+            <div class="group">
+                <button (click)="toggleDashboard()"
+                    class="flex items-center w-full p-2 text-gray-500 transition-colors rounded-md dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900 group-hover:bg-blue-100 dark:group-hover:bg-blue-900">
+                    <span aria-hidden="true">
+                        <mat-icon class="w-5 h-5">home</mat-icon>
+                    </span>
+                    <span class="ml-2 text-sm">Dashboard</span>
+                    <span class="ml-auto" aria-hidden="true">
+                        <mat-icon [class.rotate-180]="dashboardExpanded()"
+                            class="w-4 h-4 transition-transform transform">
+                            expand_more
+                        </mat-icon>
+                    </span>
+                </button>
+
+                <div [class.hidden]="!dashboardExpanded()" class="mt-2 space-y-2 px-7 transition-all duration-200">
+                    <a [routerLink]="'/main-content'"
+                        class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                        Main Dashboard
+                    </a>
+                    <a [routerLink]="'/analytics'"
+                        class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                        Analytics
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</aside>
