@@ -8,7 +8,10 @@ const routes: Routes = [
         children: [
             {
                 path: '',
-                component: DashboardComponent
+                component: DashboardComponent,
+                data: {
+                    title: 'Source Data Dashboard'
+                }
             }
         ]
     }
