@@ -14,6 +14,9 @@ import { IRouteData } from '../interfaces/routeData';
 })
 
 export class LayoutComponent implements OnInit {
+  showHeader = true;
+  showFooter = true;
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -45,6 +48,9 @@ export class LayoutComponent implements OnInit {
     if (data['title']) {
       this.pageTitle.setTitle(data['title']);
     }
+
+    this.showHeader = data['showHeader'] !== false;
+    this.showFooter = data['showFooter'] !== false;
 
   }
 }

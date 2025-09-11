@@ -10,7 +10,10 @@ const routes: Routes = [
                 path: '',
                 component: DashboardComponent,
                 data: {
-                    title: 'Source Data Dashboard'
+                    title: 'Source Data Dashboard',
+                    layout: 'default',
+                    showHeader: true,
+                    showFooter: true,
                 }
             }
         ]
