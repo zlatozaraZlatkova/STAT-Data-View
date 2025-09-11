@@ -1,0 +1,31 @@
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+  <!-- Quick Stats Cards -->
+  <app-metric-card></app-metric-card>
+
+  <!-- Main Dashboard Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <!-- Chart Section -->
+    <div class="lg:col-span-2">
+      <app-chart></app-chart>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="lg:col-span-1">
+      <app-sidebar></app-sidebar>
+    </div>
+
+  </div>
+
+  <!-- Bottom Section -->
+  <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+    <!-- Data Tables -->
+    <app-data-table></app-data-table>
+    <!-- News/Updates -->
+    <app-news-and-updates></app-news-and-updates>
+
+  </div>
+
+</main>
