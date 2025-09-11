@@ -1,17 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardComponent,
+    redirectTo: '/dashboard',
     pathMatch: 'full'
-  }
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('./features/source-data/source-data.module').then((m) => m.SourceDataModule),
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    scrollPositionRestoration: 'top'
+  }),],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

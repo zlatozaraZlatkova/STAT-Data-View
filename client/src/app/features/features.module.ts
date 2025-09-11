@@ -2,23 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../shared/shared.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { DataTableComponent } from './data-table/data-table.component';
-import { MetricCardComponent } from './metric-card/metric-card.component';
-import { ChartComponent } from './chart/chart.component';
-
+import { SourceDataModule } from './source-data/source-data.module';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
-  declarations: [
-    DashboardComponent, 
-    MetricCardComponent,
-    DataTableComponent,
-    ChartComponent
-  ],
+  declarations: [],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    SourceDataModule,
+    RouterModule,
   ]
 })
 export class FeaturesModule { }
