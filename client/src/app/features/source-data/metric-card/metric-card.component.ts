@@ -8,5 +8,9 @@ import { IEstatDataset } from 'src/app/interfaces/metricData';
 })
 export class MetricCardComponent {
   @Input() data!: IEstatDataset;
+  @Input() currentPopulation!: number;
+  @Input() populationDiffPercent!: number;
+
+
 
 }
