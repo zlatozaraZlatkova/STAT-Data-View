@@ -1,6 +1,6 @@
 {
   "/api/*": {
-    "target": "https://data.statistik.gv.at",
+    "target": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data",
     "secure": true,
     "changeOrigin": true,
     "logLevel": "debug",

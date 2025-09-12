@@ -1,7 +1,10 @@
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  
+  <ng-container *ngIf="population$ | async as populationData">
+    <!-- Quick Stats Cards -->
+    <app-metric-card [data]="populationData"></app-metric-card>
 
-  <!-- Quick Stats Cards -->
-  <app-metric-card></app-metric-card>
+  </ng-container>
 
   <!-- Main Dashboard Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">

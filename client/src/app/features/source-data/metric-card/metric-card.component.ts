@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { IEstatDataset } from 'src/app/interfaces/metricData';
 
 @Component({
   selector: 'app-metric-card',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./metric-card.component.css']
 })
 export class MetricCardComponent {
+  @Input() data!: IEstatDataset;
 
 }
