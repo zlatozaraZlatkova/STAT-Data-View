@@ -12,7 +12,7 @@ export class ApiService {
   private readonly datasets = {
     population: { code: 'tps00001' },
     gdp: { code: 'nama_10_gdp', unit: 'CLV10_MEUR' },
-    employment: { code: 'lfsi_emp_a' },
+    employment: { code: 'lfsi_emp_a', indic_em:'EMP_LFS', sex:'T', age:'Y15-64', unit:'THS_PER' },
     inflation: { code: 'tec00118' },
   };
 
@@ -31,6 +31,14 @@ export class ApiService {
       params.append('unit', datasets.unit);
     }
 
+     if ('indic_em' in datasets) {
+      params.append('indic_em', datasets.indic_em);
+      params.append('sex', datasets.sex);
+      params.append('age', datasets.age);
+      params.append('unit', datasets.unit);
+    }
+
+    console.log(`URL: ` + `${this.baseUrl}/${datasets.code}?${params.toString()}`)
     return `${this.baseUrl}/${datasets.code}?${params.toString()}`;
   }
 

@@ -15,9 +15,11 @@ export class DashboardComponent implements OnInit {
   metricsData$: Observable<IEstatDataset[] | null> = combineLatest([
     this.dataService.population$.pipe(filter((data): data is IEstatDataset => data !== null)),
     this.dataService.gdp$.pipe(filter((data): data is IEstatDataset => data !== null)),
-  ]).pipe(map(([populationData, gdpData]) => [
-    populationData,gdpData
-  ]))
+    this.dataService.employment$.pipe(filter((data): data is IEstatDataset => data !== null)),
+    this.dataService.inflation$.pipe(filter((data): data is IEstatDataset => data !== null)),
+
+  ]).pipe(map(([populationData, gdpData, employmentData, inflationData]) =>
+    [populationData, gdpData, employmentData, inflationData]))
 
   constructor(private dataService: DataService) { }
 
@@ -35,6 +37,16 @@ export class DashboardComponent implements OnInit {
       .subscribe({
         next: (data) => console.log('GDP data:', data),
       });
+
+    this.dataService.getEmployment().pipe(take(1)).subscribe({
+      next: (data) => console.log('Employment data:', data),
+    })
+
+    this.dataService.getInflation().pipe(take(1)).subscribe({
+      next: (data) => console.log('Inflation data:', data),
+    })
+
+
   }
 
 
