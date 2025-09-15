@@ -8,7 +8,6 @@
       <div class="flex items-center gap-2 mb-2">
         <span>{{data.label | extractWord}}</span>
         <mat-icon class="bg-green-100 text-green-700 rounded-full cursor-pointer hover:bg-green-200 transition-colors"
-
           [matTooltip]="data.label" matTooltipPosition="above">
           info_outline
         </mat-icon>
@@ -24,7 +23,7 @@
 
       <div class="mb-3">
         <p class="text-3xl font-bold text-gray-900 group-hover:text-stats-blue transition-colors duration-300">
-          {{ currentValues | number : "1.0-0" : "en-US" }}M
+          {{ getFormattedValue()}}
         </p>
       </div>
 

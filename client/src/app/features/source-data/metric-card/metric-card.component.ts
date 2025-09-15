@@ -17,39 +17,61 @@ export class MetricCardComponent implements OnInit {
   percentageDifference: number = 0;
 
   ngOnInit(): void {
-    this.calculateYearlyMetrics(this.data)
+    this.calculateYearlyMetrics(this.data);
   }
 
   private calculateYearlyMetrics(data: IEstatDataset) {
     const timeIndexArr = Object.values(data.dimension.time.category.index);
     const values = data.value;
 
-    let currentYearIndex: number; 
+    let currentYearIndex: number;
     let previousYearIndex: number;
 
-    if(timeIndexArr.length >= 1) {
-      currentYearIndex = Number(timeIndexArr[timeIndexArr.length - 1]); 
-      this.currentValues = values[currentYearIndex] 
+    if (timeIndexArr.length >= 1) {
+      currentYearIndex = Number(timeIndexArr[timeIndexArr.length - 1]);
+      this.currentValues = values[currentYearIndex]
     }
 
-    if(timeIndexArr.length >= 2) {
-      previousYearIndex = Number(timeIndexArr[timeIndexArr.length - 2]); 
-      this.previousYearValue = values[previousYearIndex]; 
-    } 
+    if (timeIndexArr.length >= 2) {
+      previousYearIndex = Number(timeIndexArr[timeIndexArr.length - 2]);
+      this.previousYearValue = values[previousYearIndex];
+    }
 
 
-    if (this.currentValues !== undefined && this.previousYearValue !== undefined) {  
+    if (this.currentValues !== undefined && this.previousYearValue !== undefined) {
       this.absoluteDifference = this.currentValues - this.previousYearValue;
 
       this.percentageDifference = Number(
-        ((this.absoluteDifference / this.previousYearValue) * 100).toFixed(2) 
+        ((this.absoluteDifference / this.previousYearValue) * 100).toFixed(2)
       );
     }
 
   }
 
 
+  getFormattedValue(): string {
+    const unitCategory = this.data.dimension.unit?.category;
 
+    if (unitCategory?.index) {
+      const unitCode = Object.keys(unitCategory.index)[0];
+  
 
+      switch (unitCode) {
+        case 'THS_PER':
+          const millions = (this.currentValues / 1000).toFixed(1);
+          return Number(millions).toLocaleString('en-US') + 'M';
+        case 'CLV10_MEUR':
+          const billions = (this.currentValues / 1000).toFixed(1);
+          return Number(billions).toLocaleString('en-US') + 'B';
+        case 'RCH_A_AVG':
+          return this.currentValues.toLocaleString('en-US') + '%';
+        default:
+          return this.currentValues.toLocaleString('en-US');
+      }
+
+    }
+
+    return Number(this.currentValues).toLocaleString('en-US') + 'M';
+  }
 
 }

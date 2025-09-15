@@ -1,4 +1,5 @@
 interface DatasetDimension {
+  unit: any;
   freq: any;
   indic_de: any;
   geo: any;
