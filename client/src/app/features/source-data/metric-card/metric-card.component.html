@@ -1,102 +1,51 @@
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-  <!-- Population Card -->
+<div
+  class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 group relative overflow-hidden">
   <div
-    class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 group relative overflow-hidden">
-    <div
-      class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-stats-blue/5 to-stats-blue/10 rounded-full -translate-y-10 translate-x-10">
-    </div>
+    class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-stats-blue/5 to-stats-blue/10 rounded-full -translate-y-10 translate-x-10">
+  </div>
 
-    <div class="flex items-center justify-between relative z-10">
-      <div class="flex-1">
-        <div class="flex items-center gap-2 mb-2">
-          <p class="text-sm font-semibold text-gray-700">{{ data.label }}</p>
-          <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-        </div>
+  <div class="flex items-center justify-between relative z-10">
+    <div class="flex-1">
+      <div class="flex items-center gap-2 mb-2">
+        <p class="text-sm font-semibold text-gray-700">{{ data.label }}</p>
+        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+      </div>
 
-        <p class="text-xs text-gray-500 mb-4 flex items-center">
-          <svg class="w-3 h-3 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          {{ data.updated | date : "dd/MM/YYYY" }}
+      <p class="text-xs text-gray-500 mb-4 flex items-center">
+        <svg class="w-3 h-3 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        {{ data.updated | date : "dd/MM/YYYY" }}
+      </p>
+
+      <div class="mb-3">
+        <p class="text-3xl font-bold text-gray-900 group-hover:text-stats-blue transition-colors duration-300">
+          {{ currentValues | number : "1.0-0" : "en-US" }}M
         </p>
+      </div>
 
-        <div class="mb-3">
-          <p class="text-3xl font-bold text-gray-900 group-hover:text-stats-blue transition-colors duration-300">
-            {{ currentPopulation | number : "1.0-0" : "en-US" }}M
-          </p>
+      <div class="flex items-center gap-1">
+        <div class="flex items-center px-2 py-1 rounded-full" [class]="
+            percentageDifference >= 0
+              ? 'bg-green-50 text-green-700'
+              : 'bg-red-50 text-red-700'
+          ">
+          <svg class="w-3 h-3 mr-1" [class]="
+              percentageDifference >= 0
+                ? 'text-green-500 rotate-0'
+                : 'text-red-500 rotate-180'
+            " fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
+              clip-rule="evenodd" />
+          </svg>
+          <span class="text-xs font-medium">
+            {{ percentageDifference >= 0 ? "+" : ""
+            }}{{ percentageDifference }}%
+          </span>
         </div>
-
-        <div class="flex items-center gap-1">
-          <div class="flex items-center px-2 py-1 rounded-full" 
-          [class]="populationDiffPercent >= 0
-                ? 'bg-green-50 text-green-700'
-                : 'bg-red-50 text-red-700'
-            ">
-            <svg class="w-3 h-3 mr-1" [class]="populationDiffPercent >= 0
-                  ? 'text-green-500 rotate-0'
-                  : 'text-red-500 rotate-180'
-              " fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd"
-                d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
-                clip-rule="evenodd" />
-            </svg>
-            <span class="text-xs font-medium">
-              {{ populationDiffPercent >= 0 ? "+" : ""}}{{ populationDiffPercent }}%
-            </span>
-          </div>
-          <span class="text-xs text-gray-500 ml-1">from last year</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- GDP Card -->
-  <div class="bg-white rounded-lg p-6 card-shadow hover-lift">
-    <div class="flex items-center justify-between">
-      <div>
-        <p class="text-sm font-medium text-gray-600">GDP</p>
-        <p class="text-2xl font-bold text-gray-900">€432B</p>
-        <p class="text-xs text-stats-green">+2.1% from last year</p>
-      </div>
-      <div class="w-12 h-12 bg-stats-green/10 rounded-lg flex items-center justify-center">
-        <svg class="w-6 h-6 text-stats-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-        </svg>
-      </div>
-    </div>
-  </div>
-
-  <!-- Employment Card -->
-  <div class="bg-white rounded-lg p-6 card-shadow hover-lift">
-    <div class="flex items-center justify-between">
-      <div>
-        <p class="text-sm font-medium text-gray-600">Employment</p>
-        <p class="text-2xl font-bold text-gray-900">72.8%</p>
-        <p class="text-xs text-stats-green">+1.2% from last year</p>
-      </div>
-      <div class="w-12 h-12 bg-stats-orange/10 rounded-lg flex items-center justify-center">
-        <svg class="w-6 h-6 text-stats-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m8 0H8m8 0v2a2 2 0 01-2 2H10a2 2 0 01-2-2V8m8 0V6a2 2 0 00-2-2H10a2 2 0 00-2 2v2" />
-        </svg>
-      </div>
-    </div>
-  </div>
-
-  <!-- Inflation Card -->
-  <div class="bg-white rounded-lg p-6 card-shadow hover-lift">
-    <div class="flex items-center justify-between">
-      <div>
-        <p class="text-sm font-medium text-gray-600">Inflation</p>
-        <p class="text-2xl font-bold text-gray-900">3.4%</p>
-        <p class="text-xs text-red-500">+0.8% from last year</p>
-      </div>
-      <div class="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
-        <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-        </svg>
+        <span class="text-xs text-gray-500 ml-1">from last year</span>
       </div>
     </div>
   </div>

@@ -1,18 +1,15 @@
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <ng-container *ngIf="population$ | async as populationData">
+  <ng-container *ngIf="metricsData$ | async as datasetsArray">
     <!-- Quick Stats Cards -->
-
-    <app-metric-card
-      [data]="populationData"
-      [currentPopulation]="currentPopulation"
-      [populationDiffPercent]="populationDiffPercent"
-    >
-    </app-metric-card>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <app-metric-card *ngFor="let metricsData of datasetsArray" [data]="metricsData">
+      </app-metric-card>
+    </div>
   </ng-container>
 
   <!-- Main Dashboard Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    
+
     <!-- Chart Section -->
     <div class="lg:col-span-2">
       <app-chart></app-chart>
