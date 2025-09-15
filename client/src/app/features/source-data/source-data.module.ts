@@ -7,7 +7,8 @@ import { ChartComponent } from './chart/chart.component';
 import { RouterModule } from '@angular/router';
 import { SourceDataRoutingModule } from './source-data-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -21,7 +22,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CommonModule,
     SharedModule,
     RouterModule,
-    SourceDataRoutingModule
+    SourceDataRoutingModule,
+    MatTooltipModule,
+    MatIconModule
   ]
 })
 export class SourceDataModule { }

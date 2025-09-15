@@ -1,5 +1,4 @@
-<div
-  class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 group relative overflow-hidden">
+<div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 group relative overflow-hidden">
   <div
     class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-stats-blue/5 to-stats-blue/10 rounded-full -translate-y-10 translate-x-10">
   </div>
@@ -7,8 +6,12 @@
   <div class="flex items-center justify-between relative z-10">
     <div class="flex-1">
       <div class="flex items-center gap-2 mb-2">
-        <p class="text-sm font-semibold text-gray-700">{{ data.label }}</p>
-        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+        <span>{{data.label | extractWord}}</span>
+        <mat-icon class="bg-green-100 text-green-700 rounded-full cursor-pointer hover:bg-green-200 transition-colors"
+
+          [matTooltip]="data.label" matTooltipPosition="above">
+          info_outline
+        </mat-icon>
       </div>
 
       <p class="text-xs text-gray-500 mb-4 flex items-center">

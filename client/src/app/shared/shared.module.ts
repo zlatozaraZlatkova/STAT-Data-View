@@ -4,6 +4,7 @@ import { NewsAndUpdatesComponent } from './news-and-updates/news-and-updates.com
 import { RecentUpdatesComponent } from './recent-updates/recent-updates.component';
 import { CustomButtonComponent } from './custom-button/custom-button.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { ExtractWordPipe } from './pipes/extract-word.pipe';
 
 
 
@@ -12,7 +13,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     NewsAndUpdatesComponent,
     RecentUpdatesComponent,
     CustomButtonComponent,
-    SidebarComponent
+    SidebarComponent,
+    ExtractWordPipe
   ],
   imports: [
     CommonModule
@@ -21,7 +23,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     NewsAndUpdatesComponent,
     RecentUpdatesComponent,
     CustomButtonComponent,
-    SidebarComponent
+    SidebarComponent,
+    ExtractWordPipe
   ]
 })
 export class SharedModule { }
