@@ -19,6 +19,12 @@ export class DataService implements OnDestroy {
   private inflation$$ = new BehaviorSubject<IEstatDataset | null>(null);
   inflation$ = this.inflation$$.asObservable();
 
+  private tradeBalance$$ = new BehaviorSubject<IEstatDataset | null>(null);
+  tradeBalance$ = this.tradeBalance$$.asObservable();
+
+  private foreignDirectInvestment$$ = new BehaviorSubject<IEstatDataset | null>(null);
+  foreignDirectInvestment$ = this.foreignDirectInvestment$$.asObservable();
+
   constructor(private apiService: ApiService) {}
 
   getPopulation(): Observable<IEstatDataset> {
@@ -52,10 +58,31 @@ export class DataService implements OnDestroy {
       })
     )
   }
+
+  getTotalTradeBalance(): Observable<IEstatDataset> {
+    return this.apiService.getTradeBalance().pipe(
+      tap((response) => {
+        this.tradeBalance$$.next(response);
+      })
+    )
+  }
+
+  getDirectInvestmentPctGdp(): Observable<IEstatDataset> {
+    return this.apiService.getForeignDirectInvestment().pipe(
+      tap((response) => {
+        this.foreignDirectInvestment$$.next(response);
+      })
+    )
+  }
+
+
   ngOnDestroy(): void {
     this.population$$.complete();
     this.gdp$$.complete();
     this.employment$$.complete();
     this.inflation$$.complete();
+    this.tradeBalance$$.complete();
+    this.foreignDirectInvestment$$.complete();
+ 
   }
 }

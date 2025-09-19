@@ -14,6 +14,8 @@ export class ApiService {
     gdp: { code: 'nama_10_gdp', unit: 'CLV10_MEUR' },
     employment: { code: 'lfsi_emp_a', indic_em:'EMP_LFS', sex:'T', age:'Y15-64', unit:'THS_PER' },
     inflation: { code: 'tec00118' },
+    tradeBalancePct: { code: 'tet00002' },
+    fdiFlowsPct: { code: 'tipsbp90'}
   };
 
   constructor(private httpClient: HttpClient) {}
@@ -60,6 +62,14 @@ export class ApiService {
 
   getInflation() {
     return this.getData('inflation');
+  }
+
+  getTradeBalance() {
+    return this.getData('tradeBalancePct');
+  }
+
+  getForeignDirectInvestment() {
+    return this.getData('fdiFlowsPct');
   }
 
 }
