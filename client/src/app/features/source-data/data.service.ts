@@ -25,6 +25,15 @@ export class DataService implements OnDestroy {
   private foreignDirectInvestment$$ = new BehaviorSubject<IEstatDataset | null>(null);
   foreignDirectInvestment$ = this.foreignDirectInvestment$$.asObservable();
 
+  private governmentDebt$$ = new BehaviorSubject<IEstatDataset | null>(null);
+  governmentDebt$ = this.governmentDebt$$.asObservable();
+
+  private govDeficitSurplus$$ = new BehaviorSubject<IEstatDataset | null>(null);
+  govDeficitSurplus$ = this.govDeficitSurplus$$.asObservable();
+
+  private industryProduction$$ = new BehaviorSubject<IEstatDataset | null>(null);
+  industryProduction$ = this.industryProduction$$.asObservable();
+
   constructor(private apiService: ApiService) {}
 
   getPopulation(): Observable<IEstatDataset> {
@@ -43,6 +52,7 @@ export class DataService implements OnDestroy {
     )
   }
 
+  
   getEmployment(): Observable<IEstatDataset> {
     return this.apiService.getEmployment().pipe(
       tap((response)  => {
@@ -75,6 +85,28 @@ export class DataService implements OnDestroy {
     )
   }
 
+  governmentDebt(): Observable<IEstatDataset> {
+    return this.apiService.getGovernmentDebt().pipe(
+      tap((response) => {
+        this.governmentDebt$$.next(response);
+      })
+    )
+  }
+  govDeficitSurplus(): Observable<IEstatDataset> {
+    return this.apiService.getGovernmentDeficitSurplus().pipe(
+      tap((response) => {
+        this.govDeficitSurplus$$.next(response);
+      })
+    )
+  }
+
+  getIndustryProduction(): Observable<IEstatDataset> {
+    return this.apiService.getProductionInInductrie().pipe(
+      tap((response) => {
+        this.industryProduction$$.next(response);
+      })
+    )
+  }
 
   ngOnDestroy(): void {
     this.population$$.complete();
@@ -83,6 +115,9 @@ export class DataService implements OnDestroy {
     this.inflation$$.complete();
     this.tradeBalance$$.complete();
     this.foreignDirectInvestment$$.complete();
+    this.governmentDebt$$.complete();
+    this.industryProduction$$.complete();
+    this.govDeficitSurplus$$.complete();
  
   }
 }

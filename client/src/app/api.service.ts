@@ -12,13 +12,18 @@ export class ApiService {
   private readonly datasets = {
     population: { code: 'tps00001' },
     gdp: { code: 'nama_10_gdp', unit: 'CLV10_MEUR' },
-    employment: { code: 'lfsi_emp_a', indic_em:'EMP_LFS', sex:'T', age:'Y15-64', unit:'THS_PER' },
+    employment: { code: 'lfsi_emp_a', indic_em: 'EMP_LFS', sex: 'T', age: 'Y15-64', unit: 'THS_PER' },
     inflation: { code: 'tec00118' },
-    tradeBalancePct: { code: 'tet00002' },
-    fdiFlowsPct: { code: 'tipsbp90'}
+    tradeBalancePct: { code: 'tet00002', unit: 'MIO_EUR' },
+    fdiFlowsPct: { code: 'tipsbp90' },
+    governmentDebt: { code: 'teina225', unit: 'PC_GDP' },
+    governmentDeficitSurplus: { code: 'teina200', unit: 'PC_GDP' },
+    industryProduction: { code: 'sts_inpr_a', nace_r2: 'C', unit: 'I21' },
+
+
   };
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   private buildUrl(datasetType: keyof typeof this.datasets): string {
     const datasets = this.datasets[datasetType];
@@ -32,8 +37,11 @@ export class ApiService {
     if ('unit' in datasets) {
       params.append('unit', datasets.unit);
     }
+    if ('nace_r2' in datasets) {
+      params.append('nace_r2', datasets.nace_r2);
+    }
 
-     if ('indic_em' in datasets) {
+    if ('indic_em' in datasets) {
       params.append('indic_em', datasets.indic_em);
       params.append('sex', datasets.sex);
       params.append('age', datasets.age);
@@ -72,4 +80,18 @@ export class ApiService {
     return this.getData('fdiFlowsPct');
   }
 
+
+  getGovernmentDebt() {
+    return this.getData('governmentDebt')
+  }
+
+  getGovernmentDeficitSurplus() {
+    return this.getData('governmentDeficitSurplus')
+  }
+
+  getProductionInInductrie() {
+    return this.getData('industryProduction')
+  }
+
+ 
 }

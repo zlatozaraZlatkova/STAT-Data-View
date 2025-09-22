@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { DataService } from '../data.service';
-import { combineLatest, filter, map, Observable, take, tap } from 'rxjs';
+import { catchError, combineLatest, filter, Observable, of, take } from 'rxjs';
 import { IEstatDataset } from 'src/app/interfaces/metricData';
 
 @Component({
@@ -11,15 +11,17 @@ import { IEstatDataset } from 'src/app/interfaces/metricData';
 export class DashboardComponent implements OnInit {
   isSidebarOpen = signal(true);
 
-
   metricsData$: Observable<IEstatDataset[] | null> = combineLatest([
     this.dataService.population$.pipe(filter((data): data is IEstatDataset => data !== null)),
     this.dataService.gdp$.pipe(filter((data): data is IEstatDataset => data !== null)),
     this.dataService.employment$.pipe(filter((data): data is IEstatDataset => data !== null)),
-    this.dataService.inflation$.pipe(filter((data): data is IEstatDataset => data !== null)),
-
-  ]).pipe(map(([populationData, gdpData, employmentData, inflationData]) =>
-    [populationData, gdpData, employmentData, inflationData]))
+    this.dataService.inflation$.pipe(filter((data): data is IEstatDataset => data !== null))
+  ]).pipe(
+    catchError(err => {
+      console.error('Error loading metrics:', err);
+      return of(null);
+    })
+  );
 
   constructor(private dataService: DataService) { }
 
@@ -28,27 +30,11 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadAllData() {
-    this.dataService.getPopulation().pipe(take(1))
-      .subscribe({
-        next: (data) => console.log('Population data:', data),
-      });
-
-    this.dataService.getGdp().pipe(take(1))
-      .subscribe({
-        next: (data) => console.log('GDP data:', data),
-      });
-
-    this.dataService.getEmployment().pipe(take(1)).subscribe({
-      next: (data) => console.log('Employment data:', data),
-    })
-
-    this.dataService.getInflation().pipe(take(1)).subscribe({
-      next: (data) => console.log('Inflation data:', data),
-    })
-
-
+    this.dataService.getPopulation().pipe(take(1)).subscribe();
+    this.dataService.getGdp().pipe(take(1)).subscribe();
+    this.dataService.getEmployment().pipe(take(1)).subscribe();
+    this.dataService.getInflation().pipe(take(1)).subscribe();
   }
-
 
   onToggleSidebar(): void {
     this.isSidebarOpen.update((currentValue) => !currentValue);

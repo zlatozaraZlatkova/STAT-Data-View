@@ -71,7 +71,7 @@ export class MetricCardComponent implements OnInit {
 
     }
 
-    return Number(this.currentValues).toLocaleString('en-US') + 'M';
+    return Number(this.currentValues).toLocaleString('en-US');
   }
 
 }
