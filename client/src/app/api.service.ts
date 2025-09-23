@@ -7,7 +7,8 @@ import { IEstatDataset } from './interfaces/metricData';
   providedIn: 'root',
 })
 export class ApiService {
-  private readonly baseUrl = `/api`;
+  private readonly baseApiUrl = `/api/statistics/1.0/data`;
+  private readonly baseRssUrl = `/api/catalogue/rss/en/statistics-update.rss`;
 
   private readonly datasets = {
     population: { code: 'tps00001' },
@@ -24,6 +25,10 @@ export class ApiService {
   };
 
   constructor(private httpClient: HttpClient) { }
+
+  getRssNews(): Observable<string> {
+    return this.httpClient.get(this.baseRssUrl, { responseType: 'text' })
+  }
 
   private buildUrl(datasetType: keyof typeof this.datasets): string {
     const datasets = this.datasets[datasetType];
@@ -48,8 +53,8 @@ export class ApiService {
       params.append('unit', datasets.unit);
     }
 
-    console.log(`URL: ` + `${this.baseUrl}/${datasets.code}?${params.toString()}`)
-    return `${this.baseUrl}/${datasets.code}?${params.toString()}`;
+    console.log(`URL: ` + `${this.baseApiUrl}/${datasets.code}?${params.toString()}`)
+    return `${this.baseApiUrl}/${datasets.code}?${params.toString()}`;
   }
 
   private getData(datasetType: keyof typeof this.datasets): Observable<IEstatDataset> {
@@ -93,5 +98,5 @@ export class ApiService {
     return this.getData('industryProduction')
   }
 
- 
+
 }
