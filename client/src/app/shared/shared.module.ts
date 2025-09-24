@@ -1,30 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NewsAndUpdatesComponent } from './news-and-updates/news-and-updates.component';
 import { RecentUpdatesComponent } from './recent-updates/recent-updates.component';
 import { CustomButtonComponent } from './custom-button/custom-button.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ExtractWordPipe } from './pipes/extract-word.pipe';
+import { RssNewsComponent } from './rss-news/rss-news.component';
 
 
 
 @NgModule({
   declarations: [
-    NewsAndUpdatesComponent,
     RecentUpdatesComponent,
     CustomButtonComponent,
     SidebarComponent,
-    ExtractWordPipe
+    ExtractWordPipe,
+    RssNewsComponent
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    NewsAndUpdatesComponent,
     RecentUpdatesComponent,
     CustomButtonComponent,
     SidebarComponent,
-    ExtractWordPipe
+    ExtractWordPipe,
+    RssNewsComponent
   ]
 })
 export class SharedModule { }
