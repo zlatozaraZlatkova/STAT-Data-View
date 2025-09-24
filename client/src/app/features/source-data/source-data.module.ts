@@ -11,6 +11,7 @@ import { MetricCardComponent } from './metric-card/metric-card.component';
 import { DataTableComponent } from './data-table/data-table.component';
 import { SourceDataRoutingModule } from './source-data-routing.module';
 import { ChartComponent } from './chart/chart.component';
+import { RssNewsListComponent } from './rss-news-list/rss-news-list.component';
 
 
 
@@ -20,7 +21,8 @@ import { ChartComponent } from './chart/chart.component';
     DashboardComponent, 
     MetricCardComponent,
     DataTableComponent,
-    ChartComponent
+    ChartComponent,
+    RssNewsListComponent
   ],
   imports: [
     CommonModule,
