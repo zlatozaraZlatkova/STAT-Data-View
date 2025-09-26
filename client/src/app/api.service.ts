@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { IEstatDataset } from './interfaces/metricData';
 
 @Injectable({
@@ -9,6 +9,18 @@ import { IEstatDataset } from './interfaces/metricData';
 export class ApiService {
   private readonly baseApiUrl = `/api/statistics/1.0/data`;
   private readonly baseRssUrl = `/api/catalogue/rss/en/statistics-update.rss`;
+
+  private selectedCountry$$ = new BehaviorSubject<string>('AT');
+  public selectedCountry$ = this.selectedCountry$$.asObservable();
+
+  getCurrentCountry(): string {
+    return this.selectedCountry$$.value;
+  }
+
+  setSelectedCountry(countryCode: string): void {
+    this.selectedCountry$$.next(countryCode);
+  }
+
 
   private readonly datasets = {
     population: { code: 'tps00001' },
@@ -33,10 +45,12 @@ export class ApiService {
   private buildUrl(datasetType: keyof typeof this.datasets): string {
     const datasets = this.datasets[datasetType];
 
+    const selectedCountry = this.getCurrentCountry();
+
     const params = new URLSearchParams({
       format: 'JSON',
       lang: 'EN',
-      geo: 'AT',
+      geo: selectedCountry,
     });
 
     if ('unit' in datasets) {
