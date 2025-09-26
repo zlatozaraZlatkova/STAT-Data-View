@@ -24,6 +24,10 @@ export class MetricCardComponent implements OnInit {
     const timeIndexArr = Object.values(data.dimension.time.category.index);
     const values = data.value;
 
+     if (!data.value || Object.keys(data.value).length === 0) {
+      return;
+    }
+
     let currentYearIndex: number;
     let previousYearIndex: number;
 

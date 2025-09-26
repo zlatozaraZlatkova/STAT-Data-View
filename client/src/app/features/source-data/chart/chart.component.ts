@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { IEstatDataset } from 'src/app/interfaces/metricData';
 import { DataService } from '../data.service';
-import { catchError, combineLatest, filter, Observable, of, take } from 'rxjs';
+import { ApiService } from 'src/app/api.service';
+import { Subject, takeUntil, take } from 'rxjs';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
@@ -10,28 +11,73 @@ import { BaseChartDirective } from 'ng2-charts';
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.css'],
 })
-export class ChartComponent implements OnInit {
+export class ChartComponent implements OnInit, OnDestroy {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
   public chartType: ChartType = 'line';
-
-  chartData$: Observable<IEstatDataset[] | null> = combineLatest([
-    this.dataService.tradeBalance$.pipe(filter((data): data is IEstatDataset => data !== null)),
-    this.dataService.foreignDirectInvestment$.pipe(filter((data): data is IEstatDataset => data !== null)),
-    this.dataService.governmentDebt$.pipe(filter((data): data is IEstatDataset => data !== null)),
-    this.dataService.industryProduction$.pipe(filter((data): data is IEstatDataset => data !== null)),
-    this.dataService.govDeficitSurplus$.pipe(filter((data): data is IEstatDataset => data !== null)),
-
-  ]).pipe(
-    catchError(err => {
-      console.error('Error loading metrics:', err);
-      return of(null);
-    })
-  );
+  private destroy$ = new Subject<void>();
 
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.loadAllData();
+    this.initializeData();
+    this.setupDataSubscriptions();
+  }
+
+
+  private initializeData(): void {
+    this.dataService.getTotalTradeBalance().pipe(take(1)).subscribe();
+    this.dataService.getDirectInvestmentPctGdp().pipe(take(1)).subscribe();
+    this.dataService.governmentDebt().pipe(take(1)).subscribe();
+    this.dataService.getIndustryProduction().pipe(take(1)).subscribe();
+    this.dataService.govDeficitSurplus().pipe(take(1)).subscribe();
+  }
+
+  private setupDataSubscriptions(): void {
+
+    this.dataService.tradeBalance$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(data => {
+      if (data) {
+        // console.log('Chart: Trade Balance updated');
+        this.updateChartWithData(data, 0);
+      }
+    });
+
+    this.dataService.foreignDirectInvestment$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(data => {
+      if (data) {
+        // console.log('Chart: FDI updated');
+        this.updateChartWithData(data, 1);
+      }
+    });
+
+    this.dataService.governmentDebt$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(data => {
+      if (data) {
+        // console.log('Chart: Government Debt updated');
+        this.updateChartWithData(data, 2);
+      }
+    });
+
+    this.dataService.industryProduction$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(data => {
+      if (data) {
+        console.log('Chart: Industry Production updated');
+        this.updateChartWithData(data, 3);
+      }
+    });
+
+    this.dataService.govDeficitSurplus$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(data => {
+      if (data) {
+        // console.log('Chart: Deficit/Surplus updated');
+        this.updateChartWithData(data, 4);
+      }
+    });
   }
 
   public chartData: ChartConfiguration<'line'>['data'] = {
@@ -39,8 +85,7 @@ export class ChartComponent implements OnInit {
     datasets: [
       {
         data: [],
-        label:
-          'International trade, by reporting country, total product - annual data, in Mio EUR',
+        label: 'International trade, by reporting country, total product - annual data, in Mio EUR',
         borderColor: 'rgb(239 68 68)',
         backgroundColor: 'rgba(255, 99, 132, 0.1)',
         yAxisID: 'y',
@@ -56,7 +101,7 @@ export class ChartComponent implements OnInit {
         data: [],
         label: 'Direct investment liabilities (flows) - annual data, % of GDP',
         borderColor: 'rgb(0 170 68)',
-        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+        backgroundColor: 'rgba(0, 170, 68, 0.1)',
         pointBackgroundColor: 'rgb(0 170 68)',
         yAxisID: 'y1',
       },
@@ -64,7 +109,7 @@ export class ChartComponent implements OnInit {
         data: [],
         label: 'Production in industry - annual data production volume index(2021=100)',
         borderColor: 'rgb(255 136 0)',
-        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+        backgroundColor: 'rgba(255, 136, 0, 0.1)',
         pointBackgroundColor: 'rgb(255 136 0)',
         yAxisID: 'y1',
       },
@@ -109,51 +154,15 @@ export class ChartComponent implements OnInit {
     },
   };
 
-  private loadAllData() {
-    this.dataService.getTotalTradeBalance().pipe(take(1))
-      .subscribe({
-        next: (data) => {
-          console.log('Total Trade Balance data:', data);
-          this.updateChartWithData(data, 0);
-        },
-      });
-
-    this.dataService.getDirectInvestmentPctGdp().pipe(take(1))
-      .subscribe({
-        next: (data) => {
-          console.log('FDI as prc from GDP data:', data);
-          this.updateChartWithData(data, 1);
-        },
-      });
-
-    this.dataService.governmentDebt().pipe(take(1))
-      .subscribe({
-        next: (data) => {
-          console.log('Government deficit/surplus data:', data);
-          this.updateChartWithData(data, 2);
-        },
-      });
-
-    this.dataService.getIndustryProduction().pipe(take(1))
-      .subscribe({
-        next: (data) => {
-          console.log('Production in industry data:', data);
-          this.updateChartWithData(data, 3);
-        },
-      });
-
-    this.dataService.govDeficitSurplus().pipe(take(1))
-      .subscribe({
-        next: (data) => {
-          console.log('Public Deficit/Surplus data:', data);
-          this.updateChartWithData(data, 4);
-        },
-      });
-
-
+  private hasValidData(data: IEstatDataset): boolean {
+    return data && data.value && Object.keys(data.value).length > 0;
   }
 
   private filterDataByYearAndValues(data: IEstatDataset): Array<[string, number]> {
+    if (!this.hasValidData(data)) {
+      return [];
+    }
+
     const years = data.dimension.time.category.index as Record<string, number>;
     const values = data.value as Record<string, number>;
 
@@ -163,17 +172,28 @@ export class ChartComponent implements OnInit {
   }
 
   private updateChartWithData(data: IEstatDataset, dataIndex: number): void {
-    const processedData = this.filterDataByYearAndValues(data);
+    if (!this.hasValidData(data)) {
+      console.log(`Chart: No data available for dataset ${dataIndex}`);
+      this.chartData.datasets[dataIndex].data = [];
+      this.chart?.update();
+      return;
+    }
 
+    const processedData = this.filterDataByYearAndValues(data);
     const labels = processedData.map(([year]) => year);
     const values = processedData.map(([_, value]) => value);
 
-    if (dataIndex === 0) {
+    if (dataIndex === 0 && labels.length > 0) {
       this.chartData.labels = labels;
     }
-
+    
     this.chartData.datasets[dataIndex].data = values;
-
     this.chart?.update();
   }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
 }
