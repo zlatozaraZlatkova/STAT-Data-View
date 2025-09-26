@@ -5,7 +5,7 @@ import { CustomButtonComponent } from './custom-button/custom-button.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ExtractWordPipe } from './pipes/extract-word.pipe';
 import { RssNewsComponent } from './rss-news/rss-news.component';
-
+import { SelectMenuComponent } from './select-menu/select-menu.component';
 
 
 @NgModule({
@@ -14,7 +14,8 @@ import { RssNewsComponent } from './rss-news/rss-news.component';
     CustomButtonComponent,
     SidebarComponent,
     ExtractWordPipe,
-    RssNewsComponent
+    RssNewsComponent,
+    SelectMenuComponent
   ],
   imports: [
     CommonModule
@@ -24,7 +25,8 @@ import { RssNewsComponent } from './rss-news/rss-news.component';
     CustomButtonComponent,
     SidebarComponent,
     ExtractWordPipe,
-    RssNewsComponent
+    RssNewsComponent,
+    SelectMenuComponent
   ]
 })
 export class SharedModule { }
