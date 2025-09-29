@@ -65,7 +65,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(data => {
       if (data) {
-        console.log('Chart: Industry Production updated', data);
+        //console.log('Chart: Industry Production updated', data);
         this.updateChartWithData(data, 3);
       }
     });

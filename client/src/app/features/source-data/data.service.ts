@@ -35,7 +35,57 @@ export class DataService implements OnDestroy {
   private industryProduction$$ = new BehaviorSubject<IEstatDataset | null>(null);
   industryProduction$ = this.industryProduction$$.asObservable();
 
-  constructor(private apiService: ApiService) {}
+  private nominalCapitaIncomeGrowth$$ = new BehaviorSubject<IEstatDataset | null>(null);
+  nominalCapitaIncomeGrowth$ = this.nominalCapitaIncomeGrowth$$.asObservable();
+
+  private realPerCapitaIncomeGrowth$$ = new BehaviorSubject<IEstatDataset | null>(null);
+  realPerCapitaIncomeGrowth$ = this.realPerCapitaIncomeGrowth$$.asObservable();
+
+  private savingRate$$ = new BehaviorSubject<IEstatDataset | null>(null);
+  savingRate$ = this.savingRate$$.asObservable();
+
+  private investmentRate$$ = new BehaviorSubject<IEstatDataset | null>(null);
+  investmentRate$ = this.investmentRate$$.asObservable();
+
+
+  constructor(private apiService: ApiService) { }
+
+  getNominalCapitaIncomeGrowth(): Observable<IEstatDataset> {
+    return this.apiService.selectedCountry$.pipe(
+      switchMap(() => this.apiService.getNominalPerCapitaIncomeGrowth()),
+      tap((response) => {
+        this.nominalCapitaIncomeGrowth$$.next(response);
+      }),
+      shareReplay(1)
+    );
+  }
+  getRealCapitaIncomeGrowth(): Observable<IEstatDataset> {
+    return this.apiService.selectedCountry$.pipe(
+      switchMap(() => this.apiService.getRealPerCapitaIncomeGrowth()),
+      tap((response) => {
+        this.realPerCapitaIncomeGrowth$$.next(response);
+      }),
+      shareReplay(1)
+    );
+  }
+  getSavingRate(): Observable<IEstatDataset> {
+    return this.apiService.selectedCountry$.pipe(
+      switchMap(() => this.apiService.getSavingRate()),
+      tap((response) => {
+        this.savingRate$$.next(response);
+      }),
+      shareReplay(1)
+    );
+  }
+  getInvestmentRate(): Observable<IEstatDataset> {
+    return this.apiService.selectedCountry$.pipe(
+      switchMap(() => this.apiService.getInvestmentRate()),
+      tap((response) => {
+        this.investmentRate$$.next(response);
+      }),
+      shareReplay(1)
+    );
+  }
 
   getPopulation(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
@@ -136,5 +186,9 @@ export class DataService implements OnDestroy {
     this.governmentDebt$$.complete();
     this.industryProduction$$.complete();
     this.govDeficitSurplus$$.complete();
+    this.nominalCapitaIncomeGrowth$$.complete();
+    this.realPerCapitaIncomeGrowth$$.complete();
+    this.savingRate$$.complete();
+    this.investmentRate$$.complete();
   }
 }

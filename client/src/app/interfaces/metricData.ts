@@ -41,3 +41,13 @@ export interface IEstatDataset {
   value: DatasetValue;
   version: string;
 }
+
+export interface IHouseholdIndicators {
+  label: string;
+  current: string;
+  previous: string;
+  change: string;
+  yoyChange: string;
+  changeClass: string;
+  yoyClass: string;
+}

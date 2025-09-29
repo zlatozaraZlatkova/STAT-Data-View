@@ -1,38 +1,36 @@
-    <div class="bg-white rounded-lg p-6 card-shadow">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-semibold text-gray-900">Regional Data</h3>
-        <button class="text-sm text-stats-blue hover:text-stats-blue/80">View All</button>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-gray-200">
-              <th class="text-left py-2 text-gray-600">Region</th>
-              <th class="text-right py-2 text-gray-600">Population</th>
-              <th class="text-right py-2 text-gray-600">GDP/capita</th>
-              <th class="text-right py-2 text-gray-600">Employment</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-b border-gray-100">
-              <td class="py-3 font-medium">Vienna</td>
-              <td class="py-3 text-right">1.9M</td>
-              <td class="py-3 text-right">€52,400</td>
-              <td class="py-3 text-right">74.2%</td>
-            </tr>
-            <tr class="border-b border-gray-100">
-              <td class="py-3 font-medium">Lower Austria</td>
-              <td class="py-3 text-right">1.7M</td>
-              <td class="py-3 text-right">€41,200</td>
-              <td class="py-3 text-right">72.8%</td>
-            </tr>
-            <tr class="border-b border-gray-100">
-              <td class="py-3 font-medium">Upper Austria</td>
-              <td class="py-3 text-right">1.5M</td>
-              <td class="py-3 text-right">€48,100</td>
-              <td class="py-3 text-right">75.1%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+<div class="bg-white rounded-lg p-6 card-shadow">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-lg font-semibold text-gray-900">Households Key Indicators - Annual Data </h3>
+  </div>
+  
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b border-gray-200">
+          <th class="text-left py-2 text-gray-600">Indicator</th>
+          <th class="text-right py-2 text-gray-600">Current Period</th>
+          <th class="text-right py-2 text-gray-600">Previous Period</th>
+          <th class="text-right py-2 text-gray-600">Change</th>
+          <th class="text-right py-2 text-gray-600"> 5Y Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let indicator of indicators$ | async" class="border-b border-gray-100">
+          <td class="py-3 font-medium">{{ indicator.label }}</td>
+          <td class="py-3 text-right">{{ indicator.current }}</td>
+          <td class="py-3 text-right">{{ indicator.previous }}</td>
+          <td class="py-3 text-right" [ngClass]="indicator.changeClass">
+            {{ indicator.change }}
+          </td>
+          <td class="py-3 text-right" [ngClass]="indicator.yoyClass">
+            {{ indicator.yoyChange }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="mt-4 text-xs text-gray-500">
+    Source: Eurostat | Last updated: {{ lastUpdated$ | async }}
+  </div>
+</div>

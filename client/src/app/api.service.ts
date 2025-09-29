@@ -32,6 +32,11 @@ export class ApiService {
     governmentDebt: { code: 'teina225', unit: 'PC_GDP' },
     governmentDeficitSurplus: { code: 'teina200', unit: 'PC_GDP' },
     industryProduction: { code: 'sts_inpr_a', nace_r2: 'C', unit: 'I21' },
+    nominalPerCapitaIncomeGrowth: { code: 'nasa_10_ki', na_item: 'B7G_N_HAB_GR', },
+    realPerCapitaIncomeGrowth: { code: 'nasa_10_ki', na_item: 'B7G_R_HAB_GR' },
+    savingRate: { code: 'nasa_10_ki', na_item: 'SRG_S14_S15' },
+    investmentRate: { code: 'nasa_10_ki', na_item: 'IRG_S14_S15' },
+
 
 
   };
@@ -52,6 +57,10 @@ export class ApiService {
       lang: 'EN',
       geo: selectedCountry,
     });
+
+    if('na_item' in datasets) {
+      params.append('na_item', datasets.na_item)
+    }
 
     if ('unit' in datasets) {
       params.append('unit', datasets.unit);
@@ -110,6 +119,22 @@ export class ApiService {
 
   getProductionInInductrie() {
     return this.getData('industryProduction')
+  }
+
+  getNominalPerCapitaIncomeGrowth() {
+    return this.getData('nominalPerCapitaIncomeGrowth');
+  }
+
+  getRealPerCapitaIncomeGrowth() {
+    return this.getData('realPerCapitaIncomeGrowth')
+  }
+
+  getSavingRate() {
+    return this.getData('savingRate');
+  }
+
+  getInvestmentRate() {
+    return this.getData('investmentRate');
   }
 
 
