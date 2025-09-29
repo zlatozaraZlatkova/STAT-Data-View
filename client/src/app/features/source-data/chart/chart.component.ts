@@ -207,6 +207,16 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.chart?.update();
   }
 
+
+  hasChartData(): boolean {
+    return this.chartData &&
+      this.chartData.datasets &&
+      this.chartData.datasets.length > 0 &&
+      this.chartData.datasets.some(dataset =>
+        dataset.data && dataset.data.length > 0
+      );
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
