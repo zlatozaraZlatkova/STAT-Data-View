@@ -38,7 +38,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(data => {
       if (data) {
-        // console.log('Chart: Trade Balance updated');
+        // console.log('Chart: Trade Balance updated', data);
         this.updateChartWithData(data, 0);
       }
     });
@@ -47,7 +47,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(data => {
       if (data) {
-        // console.log('Chart: FDI updated');
+        //console.log('Chart: FDI updated', data);
         this.updateChartWithData(data, 1);
       }
     });
@@ -56,7 +56,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(data => {
       if (data) {
-        // console.log('Chart: Government Debt updated');
+        //console.log('Chart: Government Debt updated', data);
         this.updateChartWithData(data, 2);
       }
     });
@@ -65,7 +65,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(data => {
       if (data) {
-        console.log('Chart: Industry Production updated');
+        console.log('Chart: Industry Production updated', data);
         this.updateChartWithData(data, 3);
       }
     });
@@ -74,7 +74,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(data => {
       if (data) {
-        // console.log('Chart: Deficit/Surplus updated');
+        // console.log('Chart: Deficit/Surplus updated', data);
         this.updateChartWithData(data, 4);
       }
     });
@@ -85,6 +85,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     datasets: [
       {
         data: [],
+        spanGaps: true,
         label: 'International trade, by reporting country, total product - annual data, in Mio EUR',
         borderColor: 'rgb(239 68 68)',
         backgroundColor: 'rgba(255, 99, 132, 0.1)',
@@ -92,6 +93,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       },
       {
         data: [],
+        spanGaps: true,
         label: 'Direct investment liabilities (flows) - annual data, % of GDP',
         borderColor: 'rgb(59 130 246)',
         backgroundColor: 'rgba(54, 162, 235, 0.1)',
@@ -99,7 +101,8 @@ export class ChartComponent implements OnInit, OnDestroy {
       },
       {
         data: [],
-        label: 'Direct investment liabilities (flows) - annual data, % of GDP',
+        spanGaps: true,
+        label: 'General government gross debt - annual data, % of GDP',
         borderColor: 'rgb(0 170 68)',
         backgroundColor: 'rgba(0, 170, 68, 0.1)',
         pointBackgroundColor: 'rgb(0 170 68)',
@@ -107,6 +110,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       },
       {
         data: [],
+        spanGaps: true,
         label: 'Production in industry - annual data production volume index(2021=100)',
         borderColor: 'rgb(255 136 0)',
         backgroundColor: 'rgba(255, 136, 0, 0.1)',
@@ -115,6 +119,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       },
       {
         data: [],
+        spanGaps: true,
         label: 'General government deficit and surplus - annual data, % of GDP',
         borderColor: 'rgb(108, 59, 170)',
         backgroundColor: 'rgba(108, 59, 170, 0.1)',
@@ -158,7 +163,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     return data && data.value && Object.keys(data.value).length > 0;
   }
 
-  private filterDataByYearAndValues(data: IEstatDataset): Array<[string, number]> {
+  private filterDataByYearAndValues(data: IEstatDataset): Array<[string, number | null]> {
     if (!this.hasValidData(data)) {
       return [];
     }
@@ -166,14 +171,24 @@ export class ChartComponent implements OnInit, OnDestroy {
     const years = data.dimension.time.category.index as Record<string, number>;
     const values = data.value as Record<string, number>;
 
-    return Object.entries(years)
-      .filter(([year, index]) => Object.hasOwn(values, index))
-      .map(([year, index]) => [year, values[index]]);
+    const startYear = 2014;
+    const endYear = 2024;
+    const result: Array<[string, number | null]> = [];
+
+    for (let year = startYear; year <= endYear; year++) {
+      const yearKey = String(year);
+      const valueIndex = years[yearKey];
+      const actualValue = values[valueIndex];
+
+      result.push([yearKey, actualValue ?? null]);
+    }
+
+    return result;
   }
 
   private updateChartWithData(data: IEstatDataset, dataIndex: number): void {
     if (!this.hasValidData(data)) {
-      console.log(`Chart: No data available for dataset ${dataIndex}`);
+      // console.log(`Chart: No data available for dataset ${dataIndex}`);
       this.chartData.datasets[dataIndex].data = [];
       this.chart?.update();
       return;
@@ -181,12 +196,13 @@ export class ChartComponent implements OnInit, OnDestroy {
 
     const processedData = this.filterDataByYearAndValues(data);
     const labels = processedData.map(([year]) => year);
-    const values = processedData.map(([_, value]) => value);
+    const values = processedData.map(([, value]) => value);
 
-    if (dataIndex === 0 && labels.length > 0) {
+    // labels (2014-2024)
+    if (dataIndex === 0) {
       this.chartData.labels = labels;
     }
-    
+
     this.chartData.datasets[dataIndex].data = values;
     this.chart?.update();
   }

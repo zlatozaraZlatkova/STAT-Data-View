@@ -42,7 +42,6 @@ export class DataService implements OnDestroy {
       switchMap(() => this.apiService.getPopulation()),
       tap((response) => {
         this.population$$.next(response);
-         console.log(response)
       }),
       shareReplay(1)
     );
@@ -53,7 +52,6 @@ export class DataService implements OnDestroy {
       switchMap(() => this.apiService.getGDP()),
       tap((response) => {
         this.gdp$$.next(response);
-         console.log(response)
       }),
       shareReplay(1)
     );
@@ -64,7 +62,6 @@ export class DataService implements OnDestroy {
       switchMap(() => this.apiService.getEmployment()),
       tap((response) => {
         this.employment$$.next(response);
-         console.log(response)
       }),
       shareReplay(1)
     );
@@ -75,7 +72,6 @@ export class DataService implements OnDestroy {
       switchMap(() => this.apiService.getInflation()),
       tap((response) => {
         this.inflation$$.next(response);
-       console.log(response)
       }),
       shareReplay(1)
     );
@@ -86,7 +82,6 @@ export class DataService implements OnDestroy {
       switchMap(() => this.apiService.getTradeBalance()),
       tap((response) => {
         this.tradeBalance$$.next(response);
-         console.log(response)
       }),
       shareReplay(1)
     );
@@ -97,7 +92,6 @@ export class DataService implements OnDestroy {
       switchMap(() => this.apiService.getForeignDirectInvestment()),
       tap((response) => {
         this.foreignDirectInvestment$$.next(response);
-         console.log(response)
       }),
       shareReplay(1)
     );
@@ -108,7 +102,6 @@ export class DataService implements OnDestroy {
       switchMap(() => this.apiService.getGovernmentDebt()),
       tap((response) => {
         this.governmentDebt$$.next(response);
-         console.log(response)
       }),
       shareReplay(1)
     );
@@ -118,7 +111,6 @@ export class DataService implements OnDestroy {
       switchMap(() => this.apiService.getGovernmentDeficitSurplus()),
       tap((response) => {
         this.govDeficitSurplus$$.next(response);
-         console.log(response)
       }),
       shareReplay(1)
     );
@@ -129,7 +121,6 @@ export class DataService implements OnDestroy {
       switchMap(() => this.apiService.getProductionInInductrie()),
       tap((response) => {
         this.industryProduction$$.next(response);
-         console.log(response)
       }),
       shareReplay(1)
     );
