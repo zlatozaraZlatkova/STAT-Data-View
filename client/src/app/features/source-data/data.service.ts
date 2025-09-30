@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable, shareReplay, switchMap, tap } from 'rxjs';
 import { ApiService } from 'src/app/api.service';
 import { IEstatDataset } from 'src/app/interfaces/metricData';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -47,11 +46,11 @@ export class DataService implements OnDestroy {
   private investmentRate$$ = new BehaviorSubject<IEstatDataset | null>(null);
   investmentRate$ = this.investmentRate$$.asObservable();
 
-
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {}
 
   getNominalCapitaIncomeGrowth(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.nominalCapitaIncomeGrowth$$.next(null)), 
       switchMap(() => this.apiService.getNominalPerCapitaIncomeGrowth()),
       tap((response) => {
         this.nominalCapitaIncomeGrowth$$.next(response);
@@ -59,8 +58,10 @@ export class DataService implements OnDestroy {
       shareReplay(1)
     );
   }
+
   getRealCapitaIncomeGrowth(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.realPerCapitaIncomeGrowth$$.next(null)),
       switchMap(() => this.apiService.getRealPerCapitaIncomeGrowth()),
       tap((response) => {
         this.realPerCapitaIncomeGrowth$$.next(response);
@@ -68,8 +69,10 @@ export class DataService implements OnDestroy {
       shareReplay(1)
     );
   }
+
   getSavingRate(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.savingRate$$.next(null)),
       switchMap(() => this.apiService.getSavingRate()),
       tap((response) => {
         this.savingRate$$.next(response);
@@ -77,8 +80,10 @@ export class DataService implements OnDestroy {
       shareReplay(1)
     );
   }
+
   getInvestmentRate(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.investmentRate$$.next(null)),
       switchMap(() => this.apiService.getInvestmentRate()),
       tap((response) => {
         this.investmentRate$$.next(response);
@@ -89,6 +94,7 @@ export class DataService implements OnDestroy {
 
   getPopulation(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.population$$.next(null)),
       switchMap(() => this.apiService.getPopulation()),
       tap((response) => {
         this.population$$.next(response);
@@ -99,6 +105,7 @@ export class DataService implements OnDestroy {
 
   getGdp(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.gdp$$.next(null)),
       switchMap(() => this.apiService.getGDP()),
       tap((response) => {
         this.gdp$$.next(response);
@@ -109,6 +116,7 @@ export class DataService implements OnDestroy {
 
   getEmployment(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.employment$$.next(null)),
       switchMap(() => this.apiService.getEmployment()),
       tap((response) => {
         this.employment$$.next(response);
@@ -119,6 +127,7 @@ export class DataService implements OnDestroy {
 
   getInflation(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.inflation$$.next(null)),
       switchMap(() => this.apiService.getInflation()),
       tap((response) => {
         this.inflation$$.next(response);
@@ -129,6 +138,7 @@ export class DataService implements OnDestroy {
 
   getTotalTradeBalance(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.tradeBalance$$.next(null)),
       switchMap(() => this.apiService.getTradeBalance()),
       tap((response) => {
         this.tradeBalance$$.next(response);
@@ -139,6 +149,7 @@ export class DataService implements OnDestroy {
 
   getDirectInvestmentPctGdp(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.foreignDirectInvestment$$.next(null)),
       switchMap(() => this.apiService.getForeignDirectInvestment()),
       tap((response) => {
         this.foreignDirectInvestment$$.next(response);
@@ -149,6 +160,7 @@ export class DataService implements OnDestroy {
 
   governmentDebt(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.governmentDebt$$.next(null)),
       switchMap(() => this.apiService.getGovernmentDebt()),
       tap((response) => {
         this.governmentDebt$$.next(response);
@@ -156,8 +168,10 @@ export class DataService implements OnDestroy {
       shareReplay(1)
     );
   }
+
   govDeficitSurplus(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.govDeficitSurplus$$.next(null)),
       switchMap(() => this.apiService.getGovernmentDeficitSurplus()),
       tap((response) => {
         this.govDeficitSurplus$$.next(response);
@@ -168,6 +182,7 @@ export class DataService implements OnDestroy {
 
   getIndustryProduction(): Observable<IEstatDataset> {
     return this.apiService.selectedCountry$.pipe(
+      tap(() => this.industryProduction$$.next(null)),
       switchMap(() => this.apiService.getProductionInInductrie()),
       tap((response) => {
         this.industryProduction$$.next(response);
