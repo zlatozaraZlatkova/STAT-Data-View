@@ -3,7 +3,7 @@
 @import "tailwindcss/utilities";
 
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   /* Color Variables */
@@ -14,7 +14,7 @@
   --shadow-color: rgba(0, 0, 0, 0.1);
 
   /* Font Variables */
-  --font-family: Arial, sans-serif;
+  --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-size-base: 16px;
   --font-size-h1: 2rem;
 
@@ -38,11 +38,23 @@
 
 body {
   font-family: var(--font-family);
+  font-weight: 400;
   margin: 0;
   padding: var(--spacing-md);
   background-color: var(--background-color);
   font-size: var(--font-size-base);
   color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Font weight standardization */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+}
+
+strong, b {
+  font-weight: 600;
 }
 
 .container {
@@ -64,7 +76,6 @@ h1 {
   margin-bottom: var(--spacing-md);
 }
 
-/* Additional utility classes using CSS variables */
 .btn {
   background-color: var(--primary-color);
   color: var(--container-bg);

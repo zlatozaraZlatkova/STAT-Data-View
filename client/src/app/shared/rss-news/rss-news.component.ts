@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { map, Observable, take } from 'rxjs';
 
 import { RssNewsService } from 'src/app/core/services/rss-news.service';
@@ -14,10 +15,10 @@ export class RssNewsComponent implements OnInit {
 
   shortListRssNews$: Observable<IRssNewsItem[]> =
     this.rssNewsService.rssNews$.pipe(
-      map((rss) => (rss ? rss.items.slice(0, 6) : []))
+      map((rss) => (rss ? rss.items.slice(0, 3) : []))
     );
 
-  constructor(private rssNewsService: RssNewsService) {}
+  constructor(private rssNewsService: RssNewsService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadRssNews();
@@ -25,6 +26,10 @@ export class RssNewsComponent implements OnInit {
 
   loadRssNews() {
     this.rssNewsService.getRssNews().pipe(take(1)).subscribe();
+  }
+
+  redirectTo() {
+    this.router.navigate(['/dashboard/rss-news'])
   }
 
   openLink(link: string): void {

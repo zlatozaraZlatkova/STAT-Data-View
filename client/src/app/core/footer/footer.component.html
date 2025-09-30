@@ -5,9 +5,12 @@
                 © 2025 Analytics. All rights reserved.
             </div>
             <div class="flex space-x-4 mt-4 md:mt-0">
-                <a [routerLink]="'/terms'" class="text-sm text-gray-600 hover:text-austria-red">Terms</a>
-                <a [routerLink]="'/privacy'" class="text-sm text-gray-600 hover:text-austria-red">Privacy</a>
-                <a [routerLink]="'/api'" class="text-sm text-gray-600 hover:text-austria-red">API</a>
+                <a routerLink="/terms" routerLinkActive="border-b-2 border-blue-600"
+                    class="text-gray-600 hover:text-blue-600 transition-colors pb-1 border-b-2 border-transparent hover:border-blue-600">Terms</a>
+                <a routerLink="/privacy" routerLinkActive="border-b-2 border-blue-600"
+                    class="text-gray-600 hover:text-blue-600 transition-colors pb-1 border-b-2 border-transparent hover:border-blue-600">Privacy</a>
+                <a routerLink="/api" routerLinkActive="border-b-2 border-blue-600"
+                    class="text-gray-600 hover:text-blue-600 transition-colors pb-1 border-b-2 border-transparent hover:border-blue-600">API</a>
             </div>
         </div>
     </div>

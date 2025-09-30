@@ -8,7 +8,7 @@
   </ng-container>
 
   <!-- Main Dashboard Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
     <!-- Chart Section -->
     <div class="lg:col-span-2">
@@ -17,20 +17,15 @@
 
     <!-- Sidebar -->
     <div class="lg:col-span-1">
-      <!-- <app-sidebar></app-sidebar> -->
-      <!-- News/Updates -->
       <app-rss-news></app-rss-news>
     </div>
 
   </div>
 
   <!-- Bottom Section -->
-  <div class="mt-8 grid grid-cols-1 md:grid-cols-1 gap-8">
-
+  <div class="mt-8 grid grid-cols-1 gap-8">
     <!-- Data Tables -->
     <app-data-table></app-data-table>
-
-
   </div>
 
 </main>

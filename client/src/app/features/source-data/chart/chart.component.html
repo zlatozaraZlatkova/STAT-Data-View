@@ -13,14 +13,14 @@
   <div class="relative">
     <div class="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-purple-50/30 rounded-xl"></div>
     <div *ngIf="hasChartData(); else noData"
-      class="relative h-dvh bg-white/60 rounded-xl border border-gray-200/50 backdrop-blur-sm p-4">
+      class="relative h-[500px] bg-white/60 rounded-xl border border-gray-200/50 backdrop-blur-sm p-4">
       <canvas baseChart [data]="chartData" [options]="chartOptions" type="line" class="w-full h-full">
       </canvas>
     </div>
 
     <ng-template #noData>
       <div
-        class="relative h-dvh bg-white/60 rounded-xl border border-gray-200/50 backdrop-blur-sm p-4 flex items-center justify-center">
+        class="relative h-[500px] bg-white/60 rounded-xl border border-gray-200/50 backdrop-blur-sm p-4 flex items-center justify-center">
         <span class="text-gray-500">No data available</span>
       </div>
     </ng-template>

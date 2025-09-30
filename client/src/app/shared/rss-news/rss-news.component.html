@@ -1,13 +1,12 @@
-<div class="bg-white rounded-lg p-6 card-shadow">
-    <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-semibold text-gray-900">RSS News</h3>
-        <button (click)="loadRssNews()" class="text-sm text-stats-blue hover:text-stats-blue/80">
+<div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg border border-gray-200/50 backdrop-blur-sm flex flex-col h-[634px]">
+    <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-semibold text-gray-900">RSS News</h3>
+        <button (click)="redirectTo()" class="text-sm text-blue-600 hover:text-blue-700 transition-colors">
             View All
         </button>
     </div>
 
-
-    <div class="space-y-4">
+    <div class="space-y-4 flex-1 overflow-y-auto">
         <ng-container *ngIf="rssNews$ | async as rssNews">
 
             <div class="mb-4 pb-2 border-b border-gray-200">
@@ -18,15 +17,15 @@
             </div>
 
             <article *ngFor="let item of (shortListRssNews$ | async)"
-                class="border-l-4 border-stats-green pl-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                class="border-l-4 border-blue-500 pl-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer rounded-r"
                 (click)="openLink(item.link)">
                 <h4 class="font-medium text-gray-900 mb-1"> {{ item.description || item.title }}</h4>
                 <div class="flex justify-between items-center">
                     <span class="text-xs text-gray-500">
                         {{ item.pubDate | date : "dd/MM/yyyy" }}
                     </span>
-                    <span class="text-xs text-stats-blue hover:underline">
-                        Read more →
+                    <span class="text-xs text-blue-600 hover:text-blue-700 transition-colors cursor-pointer">
+                        Read more <span aria-hidden="true">&rarr;</span>
                     </span>
                 </div>
             </article>
@@ -39,7 +38,7 @@
 
         <div *ngIf="!(rssNews$ | async)" class="text-center py-8">
             <p class="text-gray-500">No RSS data loaded yet</p>
-            <button (click)="loadRssNews()" class="mt-2 text-sm text-stats-blue hover:underline">
+            <button (click)="loadRssNews()" class="text-sm text-blue-600 hover:text-blue-700 transition-colors">
                 Load RSS news
             </button>
         </div>
