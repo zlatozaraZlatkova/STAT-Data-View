@@ -31,6 +31,12 @@ The project aims to provide dynamic and interactive charts for economic indicato
   This implementation integrates an RSS feed into the application by converting XML data into JSON and exposing it through reactive streams.  
   It keeps the news items up to date with RxJS, allows easy filtering or limiting to the latest entries, and ensures smooth navigation to both internal pages and external article links.
 
+### Application Preview
+![Dashboard Page](screenshots/dashboard-with-data.png)
+![Dashboard Page](screenshots/dashboard-no-data.png)
+![404 Page](screenshots/page-not-found.png)
+![Rss News Page](screenshots/rss-news.png)
+
 </details>
 </details>
 
