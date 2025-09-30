@@ -1,137 +1,352 @@
 # STAT-DATA-VIEW
 
-<details open>
-<summary><p>Note: Click to expand / collapse Documentation section</p></summary>
-</details>
-
-<details open>
-<summary><h3>1. Project Overview</h3></summary>
-
-<details open>
-<summary><h4>1.1. Brief Description</h4></summary>
-
 A dynamic tool for visualizing statistical data with Chart.js, powered by the Eurostat API. It provides interactive charts for economic indicators, with robust data processing and a clean, maintainable architecture.
 
-### Key Features
+**Demo Site**: [View Live Application](https://stat-data-view.netlify.app/dashboard)
 
-- **Improve API parameter handling**  
-  Enhanced processing of input parameters for Eurostat API requests to ensure accurate data retrieval based on selected indicators and time periods.
+![Dashboard Page](screenshots/dashboard-with-data.png)
 
-- **Implement mapping layer for API responses**  
-  Introduced a mapping layer that converts Eurostat API responses into an internal format optimized for Chart.js visualizations.
+## Table of Contents
 
-- **Develop robust data transformation pipeline**  
-  Built a reliable pipeline for data transformation, including normalization, handling of missing values, and adaptation to different units and formats.
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Development](#development)
+- [Project Architecture](#project-architecture)
+- [API Documentation](#api-documentation)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [License](#license)
 
-- **Create multi-axis chart with separate scales**  
-  Added support for multi-axis charts that allow visualization of different economic indicators with separate scales (e.g., percentages vs. absolute values) on a single diagram.
+## Features
 
-- **RSS Feed Integration**  
-  This implementation integrates an RSS feed into the application by converting XML data into JSON and exposing it through reactive streams.  
-  It keeps the news items up to date with RxJS, allows easy filtering or limiting to the latest entries, and ensures smooth navigation to both internal pages and external article links.
+### Data Visualization
+
+- **Multi-axis Charts** - Visualize different economic indicators with separate scales (e.g., percentages vs. absolute values) on a single diagram
+- **Interactive Charts** - Built with Chart.js for dynamic and responsive data visualization
+- **Real-time Data** - Direct integration with Eurostat API for up-to-date statistical information
+
+### Data Processing
+
+- **Enhanced API Parameter Handling** - Improved processing of input parameters for Eurostat API requests to ensure accurate data retrieval
+- **Mapping Layer** - Converts Eurostat API responses into an internal format optimized for Chart.js visualizations
+- **Robust Data Transformation** - Reliable pipeline for data normalization, handling missing values, and format adaptation
+
+### RSS Feed Integration
+
+- **Real-time News Updates** - Converts XML RSS feeds into JSON and exposes them through reactive streams
+- **RxJS Powered** - Keeps news items up to date with RxJS observables
+- **Seamless Navigation** - Smooth navigation to both internal pages and external article links
 
 ### Application Preview
+
+<details>
+<summary>Click to view screenshots</summary>
+
 ![Dashboard Page](screenshots/dashboard-with-data.png)
-![Dashboard Page](screenshots/dashboard-no-data.png)
+_Dashboard with statistical data visualization_
+
+![RSS News Page](screenshots/rss-news.png)
+_RSS news feed integration_
+
 ![404 Page](screenshots/page-not-found.png)
-![Rss News Page](screenshots/rss-news.png)
-
-</details>
-</details>
-
-<details open>
-<summary><h3>2. Project Architecture</h3></summary>
-
-Explanation of system design and components.
+_Custom 404 error page_
 
 </details>
 
+## Technology Stack
 
 <details>
-<summary><h3>3. API Documentation</h3></summary>
+<summary>Click to expand</summary>
 
-The EUROSTAT REST API is publicly available. Documentation and usage instructions can be found here: [API Getting Started](https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-getting-started)
+### Frontend
 
+- **Framework:** Angular 16.2.x
+- **Language:** TypeScript 5.1.3
+- **UI Components:** Angular Material 16.2.14
+- **Charts:** Chart.js 3.9.1 with ng2-charts 4.1.1
+- **State Management:** RxJS 7.8.x
+- **Styling:** CSS3 + Tailwind CSS 3.4.17
+- **HTTP Client:** Angular HttpClient
+- **XML Parser:** fast-xml-parser 5.2.5
+
+### Development Tools
+
+- **Package Manager:** npm
+- **Build Tool:** Angular CLI 16.2.16
+- **Testing:** Jasmine 4.6.0 & Karma 6.4.0
+- **Proxy Middleware:** http-proxy-middleware 2.0.6
+- **CSS Processing:** PostCSS 8.5.6 + Autoprefixer 10.4.21
+
+### External APIs
+
+- **Eurostat REST API** - Statistical data source
+- **RSS Feeds** - News integration (XML to JSON)
 
 </details>
 
+## Prerequisites
 
 <details>
-<summary><h3>4. Environment Setup</h3></summary>
+<summary>Click to expand</summary>
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** >= 16.x (recommended: 18.x or 20.x)
+- **npm** >= 8.x (comes with Node.js)
+- **Git** (for cloning the repository)
+
+**Compatible versions for this project:**
+
+- Angular 16.2.x requires Node.js ^16.14.0 or ^18.10.0
+- TypeScript 5.1.3
+
+To verify your installations:
+
+```bash
+node --version
+npm --version
+git --version
+```
+
+</details>
+
+## Installation
 
 <details>
-<summary><h4>4.1. Build Setup</h4></summary>
+<summary>Click to expand</summary>
 
-1. Install dependencies for client: 
-     ```
-     cd client
-     npm install
-     ```
+1. **Clone the repository**
 
-2. Run client-side from the project root:  
-   ```
-   npm start
-   ```
+```bash
+git clone https://github.com/yourusername/stat-data-view.git
+cd stat-data-view
+```
+
+2. **Install dependencies**
+
+```bash
+cd client
+npm install
+```
+
+</details>
+
+## Development
+
+<details>
+<summary>Click to expand</summary>
+
+### Running the Development Server
+
+From the project root:
+
+```bash
+npm start
+```
+
+This will start the Angular development server at `http://localhost:4200`
+
+The application will automatically reload if you change any of the source files.
+
+### API Proxy Configuration
+
+All API requests from the frontend are automatically proxied through the Angular proxy configuration (`proxy.conf.json`).
+
+**Example:**
+
+```typescript
+// In your Angular service
+const response = await this.http.get("/api/rss-news");
+```
+
+This request is automatically forwarded to:
+
+```
+http://localhost:4200/api/rss-news
+```
+
+</details>
+
+## Project Architecture
+
+<details>
+<summary>Click to expand</summary>
+
+### High-Level Overview
+
+The application follows Angular's best practices with a clear modular structure:
+
+```
+STAT-Data-View/
+├── client/
+│   └── src/
+│       ├── app/
+│       │   ├── core/          # Singleton services, guards
+│       │   ├── features/      # Feature modules (lazy-loaded)
+│       │   ├── shared/        # Reusable components
+│       │   ├── interfaces/    # TypeScript interfaces
+│       │   └── layout/        # Layout components
+│       ├── assets/            # Static assets
+│       └── environments/      # Environment configurations
+```
+
+### Module Structure
+
+```
+App Module
+├── Core Module (singleton)
+│   ├── Header
+│   ├── Footer
+│   ├── Page Not Found
+│   └── Services
+├── Features Module
+│   └── Source Data Module
+│       ├── Chart
+│       ├── Dashboard
+│       ├── Data Table
+│       ├── Metric Card
+│       └── RSS News List
+└── Shared Module
+    ├── Custom Button
+    ├── Pipes
+    ├── Recent Updates
+    ├── RSS News
+    ├── Select Menu
+    ├── Sidebar
+    └── Utilities
+```
+
+### Data Flow
+
+```
+┌─────────────────────────────────────────────────┐
+│              App Component                      │
+└──────────────────┬──────────────────────────────┘
+                   │
+        ┌──────────┼──────────┐
+        │          │          │
+   ┌────▼───┐ ┌───▼────┐ ┌──▼─────┐
+   │  Core  │ │Features│ │ Shared │
+   │ Module │ │ Module │ │ Module │
+   └────┬───┘ └───┬────┘ └──┬─────┘
+        │         │          │
+        │    ┌────▼─────┐    │
+        │    │  Source  │    │
+        │    │   Data   │◄───┤
+        │    │  Module  │    │
+        │    └────┬─────┘    │
+        │         │          │
+   ┌────▼─────────▼──────────▼────┐
+   │        API Service            │
+   └───────────────────────────────┘
+```
+
+### Architecture Principles
+
+✅ **Modular Structure** - Clear separation of concerns  
+✅ **Lazy Loading** - Feature modules loaded on demand  
+✅ **Shared Components** - Reusable UI components  
+✅ **Type Safety** - Full TypeScript coverage  
+✅ **Reactive Programming** - RxJS for state management  
+✅ **Clean Architecture** - Domain-driven design principles
+
+</details>
+
+## API Documentation
+
+<details>
+<summary>Click to expand</summary>
+
+### Eurostat REST API
+
+The application uses the EUROSTAT REST API for statistical data.
+
+**Documentation:** [API Getting Started Guide](https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-getting-started)
+
+</details>
+
+## Testing
+
+<details>
+<summary>Click to expand</summary>
+
+### Unit Tests
+
+Run unit tests with Karma:
+
+```bash
+npm test
+```
+
+### Code Coverage
+
+Generate coverage report:
+
+```bash
+npm run test:coverage
+```
+
+Coverage reports are generated in `coverage/` directory.
+
+</details>
+
+## Deployment
+
+<details>
+<summary>Click to expand</summary>
+
+### Production Build
+
+```bash
+npm run build
+```
+
+### Deployment Options
+
+#### Netlify (Current)
+
+The application is deployed on Netlify: [stat-data-view.netlify.app](https://stat-data-view.netlify.app/dashboard)
+
+</details>
+
+## Acknowledgments
+
+<details>
+<summary>Click to expand</summary>
+
+- **Eurostat** for providing the statistical data API
+- **Chart.js** for the excellent charting library
+- **Angular Team** for the robust framework
+
+</details>
+
+## License
+
+<details>
+<summary>Click to expand</summary>
   
-   This will start:  
-   - Frontend (Angular) server at `http://localhost:4200`
+This work is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License**.
 
+### You may:
 
-- **Note about API Proxy:**  
-  All API requests from the frontend are automatically proxied to the backend server through the Angular proxy configuration (`proxy.conf.json`). Here's how it works:
+- ✅ **Share** - Copy and redistribute the material in any medium or format
+- ✅ **Adapt** - Remix, transform, and build upon the material
 
-  - In your Angular services, you can make API calls using shorter paths:  
-    ```
-    const response = await this.http.get('/api/rss-news');
-    ```
+### Under the following terms:
 
-  - The Angular proxy automatically forwards these requests to your backend server:  
-    ```
-    http://localhost:4200/api/rss-news
-    ```
+- **Attribution** - You must give appropriate credit, provide a link to the license, and indicate if changes were made
+- **NonCommercial** - You may not use the material for commercial purposes
 
-</details>
-</details>
-
-<details>
-<summary><h3>5. Security Measures</h3></summary>
-
-Details on security policies and best practices.
-
-</details>
-
-
-<details>
-<summary><h3>6. Error Handling</h3></summary>
-
-Error codes, logs, and troubleshooting tips.
-
-</details>
-
-<details>
-<summary><h3>7. References and Resources Used</h3></summary>
-
-List of references, tools, and external resources.
-
-</details>
-
-<details open>
-<summary><h3> 8. License</h3></summary>
-
-This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. 
-
-You may:
-
-- Share — copy and redistribute the material in any medium or format
-- Adapt — remix, transform, and build upon the material
-
-Under the following terms:
-
-- **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-- **NonCommercial** — You may not use the material for commercial purposes.
-
-No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+No additional restrictions - You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
 
 For full license text, visit: [https://creativecommons.org/licenses/by-nc/4.0/](https://creativecommons.org/licenses/by-nc/4.0/)
+
+---
+
+**Made with ❤️ by Zlatozara Zlatkova**
+
+_Last updated: September 2025_
 
 </details>
