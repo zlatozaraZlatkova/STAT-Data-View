@@ -1,6 +1,8 @@
 {
   "name": "client",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "author": "Zlatozara Zlatkova",
+  "license": "CC-BY-NC-4.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.json",

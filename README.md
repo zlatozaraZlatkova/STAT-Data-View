@@ -10,8 +10,7 @@
 <details open>
 <summary><h4>1.1. Brief Description</h4></summary>
 
-Visualization of statistical data using Chart.js with Eurostat API integration.  
-The project aims to provide dynamic and interactive charts for economic indicators, with a strong focus on reliable data transformation and clean, maintainable code structure.
+A dynamic tool for visualizing statistical data with Chart.js, powered by the Eurostat API. It provides interactive charts for economic indicators, with robust data processing and a clean, maintainable architecture.
 
 ### Key Features
 
@@ -48,7 +47,7 @@ Explanation of system design and components.
 </details>
 
 
-<details open>
+<details>
 <summary><h3>3. API Documentation</h3></summary>
 
 The EUROSTAT REST API is publicly available. Documentation and usage instructions can be found here: [API Getting Started](https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-getting-started)
@@ -57,10 +56,10 @@ The EUROSTAT REST API is publicly available. Documentation and usage instruction
 </details>
 
 
-<details open>
+<details>
 <summary><h3>4. Environment Setup</h3></summary>
 
-<details open>
+<details>
 <summary><h4>4.1. Build Setup</h4></summary>
 
 1. Install dependencies for client: 
@@ -113,5 +112,26 @@ Error codes, logs, and troubleshooting tips.
 <summary><h3>7. References and Resources Used</h3></summary>
 
 List of references, tools, and external resources.
+
+</details>
+
+<details open>
+<summary><h3> 8. License</h3></summary>
+
+This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. 
+
+You may:
+
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material
+
+Under the following terms:
+
+- **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+- **NonCommercial** — You may not use the material for commercial purposes.
+
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+
+For full license text, visit: [https://creativecommons.org/licenses/by-nc/4.0/](https://creativecommons.org/licenses/by-nc/4.0/)
 
 </details>
