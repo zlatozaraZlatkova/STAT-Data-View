@@ -2,35 +2,49 @@
   <div class="flex items-center justify-between mb-4">
     <h3 class="text-lg font-semibold text-gray-900">Households Key Indicators - Annual Data </h3>
   </div>
-  
-  <div class="overflow-x-auto">
-    <table class="w-full text-sm">
-      <thead>
-        <tr class="border-b border-gray-200">
-          <th class="text-left py-2 text-gray-600">Indicator</th>
-          <th class="text-right py-2 text-gray-600">Current Period</th>
-          <th class="text-right py-2 text-gray-600">Previous Period</th>
-          <th class="text-right py-2 text-gray-600">Change</th>
-          <th class="text-right py-2 text-gray-600"> 5Y Change</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let indicator of indicators$ | async" class="border-b border-gray-100">
-          <td class="py-3 font-medium">{{ indicator.label }}</td>
-          <td class="py-3 text-right">{{ indicator.current }}</td>
-          <td class="py-3 text-right">{{ indicator.previous }}</td>
-          <td class="py-3 text-right" [ngClass]="indicator.changeClass">
-            {{ indicator.change }}
-          </td>
-          <td class="py-3 text-right" [ngClass]="indicator.yoyClass">
-            {{ indicator.yoyChange }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
-  <div class="mt-4 text-xs text-gray-500">
-    Source: Eurostat | Last updated: {{ lastUpdated$ | async }}
-  </div>
+
+  <ng-container *ngIf="(indicators$ | async) as indicators; else noData">
+    <div *ngIf="indicators.length > 0; else noData">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th class="text-left py-2 text-gray-600">Indicator</th>
+              <th class="text-right py-2 text-gray-600">Current Period</th>
+              <th class="text-right py-2 text-gray-600">Previous Period</th>
+              <th class="text-right py-2 text-gray-600">Change</th>
+              <th class="text-right py-2 text-gray-600"> 5Y Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let indicator of indicators" class="border-b border-gray-100">
+              <td class="py-3 font-medium">{{ indicator.label }}</td>
+              <td class="py-3 text-right">{{ indicator.current }}</td>
+              <td class="py-3 text-right">{{ indicator.previous }}</td>
+              <td class="py-3 text-right" [ngClass]="indicator.changeClass">
+                {{ indicator.change }}
+              </td>
+              <td class="py-3 text-right" [ngClass]="indicator.yoyClass">
+                {{ indicator.yoyChange }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-4 text-xs text-gray-500">
+        Source: Eurostat | Last updated: {{ lastUpdated$ | async }}
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noData>
+    <div class="text-center py-12">
+      <mat-icon class="mx-auto mb-4 text-gray-400" [style.font-size.px]="48" [style.width.px]="48" [style.height.px]="48">
+        equalizer
+      </mat-icon>
+      <p class="text-gray-500 text-base">No provided data yet</p>
+      <p class="text-gray-400 text-sm mt-1">Data will appear here when available</p>
+    </div>
+  </ng-template>
+
 </div>
