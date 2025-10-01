@@ -20,6 +20,10 @@ export class RssNewsService implements OnDestroy {
       map((response: string) => {
         return parseXmlToJson(response)
       }),
+      map((rss: IRssNews) => ({
+        ...rss,
+        items: rss.items.slice(0, 15)
+      })),
       tap((response: IRssNews) => {
         this.rssNews$$.next(response);
       }),
@@ -29,7 +33,7 @@ export class RssNewsService implements OnDestroy {
     )
   }
 
-  
+
 
   ngOnDestroy(): void {
     this.rssNews$$.complete();
