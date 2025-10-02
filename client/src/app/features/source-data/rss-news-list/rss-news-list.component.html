@@ -16,8 +16,7 @@
                     class="border-l-4 border-stats-green pl-4 hover:bg-gray-50 transition-colors cursor-pointer"
                     *ngFor="let item of rssNewsList.items | paginate: { 
                     itemsPerPage: itemsPerPage, 
-                    currentPage: currentPage,
-                    totalItems: rssNewsList.pagination?.totalItems
+                    currentPage: currentPage
                   }"
                   (click)="openLink(item.link)"
                   >

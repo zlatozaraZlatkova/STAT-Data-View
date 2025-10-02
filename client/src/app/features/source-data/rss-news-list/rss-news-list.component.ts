@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, take, takeUntil } from 'rxjs';
+
 import { RssNewsService } from 'src/app/core/services/rss-news.service';
+import { getPageFromUrl } from 'src/app/shared/utils/get-page-from-url';
 
 @Component({
   selector: 'app-rss-news-list',
@@ -22,36 +24,27 @@ export class RssNewsListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.loadRSSForQueryParamsChange();
+    this.loadAllRss();
+    this.syncQueryParamsChange();
   }
 
-  private loadPaginatedRss(page: number): void {
-    this.currentPage = page;
-    this.rssNewsService.getRssNews(page, this.itemsPerPage).pipe(take(1))
-      .subscribe();
+  private loadAllRss(): void {
+    this.rssNewsService.getRssNews().pipe(take(1)).subscribe();
   }
 
-  private loadRSSForQueryParamsChange(): void {
+  private syncQueryParamsChange(): void {
     this.route.queryParams.pipe(takeUntil(this.destroy$))
       .subscribe((urlParams) => {
-        const pageNumberFromUrl = this.getPageFromUrl(urlParams);
-        this.loadPaginatedRss(pageNumberFromUrl);
+        this.currentPage = getPageFromUrl(urlParams);
       });
   }
 
-  private getPageFromUrl(urlParams: Params): number {
-    const pageAsString = urlParams['page'];
-    const pageAsNumber = parseInt(pageAsString, 10);
-
-    if (!pageAsString || pageAsNumber < 1) {
-      return 1;
-    }
-
-    return pageAsNumber;
-  }
 
   onPageChange(page: number): void {
-    this.router.navigate([], { queryParams: { page: page } });
+    this.router.navigate([], { 
+      queryParams: { page: page }, 
+      queryParamsHandling: 'merge' 
+    });
   }
 
   openLink(link: string): void {

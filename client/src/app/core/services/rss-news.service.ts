@@ -16,13 +16,10 @@ export class RssNewsService implements OnDestroy {
 
   constructor(private apiService: ApiService) { }
 
-  getRssNews(page: number = 1, limit: number = 10): Observable<IRssNews> {
+  getRssNews(): Observable<IRssNews> {
     return this.apiService.getRssNews().pipe(
       map((response: string) => {
-        const parsedData = parseXmlToJson(response);
-
-        return createPaginatedResponse(parsedData, page, limit);
-        
+        return parseXmlToJson(response);
       }),
       tap((response: IRssNews) => {
         this.rssNews$$.next(response);
