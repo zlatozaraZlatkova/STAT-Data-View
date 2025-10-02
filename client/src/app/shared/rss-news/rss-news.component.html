@@ -17,7 +17,7 @@
             </div>
 
             <article *ngFor="let item of (shortListRssNews$ | async)"
-                class="border-l-4 border-blue-500 pl-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer rounded-r"
+                class="text-sm border-l-4 border-blue-500 pl-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer rounded-r"
                 (click)="openLink(item.link)">
                 <h4 class="font-medium text-gray-900 mb-1"> {{ item.description || item.title }}</h4>
                 <div class="flex justify-between items-center">
