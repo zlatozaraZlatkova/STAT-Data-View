@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 import { RecentUpdatesComponent } from './recent-updates/recent-updates.component';
 import { CustomButtonComponent } from './custom-button/custom-button.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -20,7 +22,8 @@ import { PaginationComponent } from './pagination/pagination.component';
     PaginationComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    NgxPaginationModule 
   ],
   exports: [
     RecentUpdatesComponent,

@@ -12,6 +12,7 @@ import { DataTableComponent } from './data-table/data-table.component';
 import { SourceDataRoutingModule } from './source-data-routing.module';
 import { ChartComponent } from './chart/chart.component';
 import { RssNewsListComponent } from './rss-news-list/rss-news-list.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -31,7 +32,8 @@ import { RssNewsListComponent } from './rss-news-list/rss-news-list.component';
     SourceDataRoutingModule,
     MatTooltipModule,
     MatIconModule,
-    NgChartsModule 
+    NgChartsModule,
+    NgxPaginationModule 
   ]
 })
 export class SourceDataModule { }

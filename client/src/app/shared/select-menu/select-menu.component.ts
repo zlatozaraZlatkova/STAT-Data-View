@@ -15,7 +15,6 @@ export class SelectMenuComponent {
   onCountryChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     const selectedValue = target.value;
-    console.log(selectedValue);
 
     if (selectedValue) {
       this.apiService.setSelectedCountry(selectedValue);

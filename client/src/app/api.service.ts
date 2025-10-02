@@ -76,7 +76,7 @@ export class ApiService {
       params.append('unit', datasets.unit);
     }
 
-    console.log(`URL: ` + `${this.baseApiUrl}/${datasets.code}?${params.toString()}`)
+    // console.log(`URL: ` + `${this.baseApiUrl}/${datasets.code}?${params.toString()}`)
     return `${this.baseApiUrl}/${datasets.code}?${params.toString()}`;
   }
 

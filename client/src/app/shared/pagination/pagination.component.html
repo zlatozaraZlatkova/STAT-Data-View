@@ -1,1 +1,11 @@
-<p>pagination works!</p>
+<div class="pagination-wrapper">
+  <pagination-controls 
+    (pageChange)="onPageChange($event)"
+    previousLabel="Previous"
+    nextLabel="Next"
+    [maxSize]="5"
+    [directionLinks]="true"
+    [responsive]="true"
+    >
+  </pagination-controls>
+</div>

@@ -78,7 +78,6 @@ export class DataTableComponent implements OnInit {
 
   private extractValues(dataset: IEstatDataset) {
     const values = Object.values(dataset.value) as number[];
-    console.log('Values array:', values);
     
     return {
       current: values[values.length - 1],

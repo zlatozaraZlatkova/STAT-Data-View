@@ -1,3 +1,5 @@
+import { IPagination } from "./pagination";
+
 export interface IRssNewsItem {
   title: string;
   description: string;
@@ -13,4 +15,5 @@ export interface IRssNews {
   link: string;
   lastBuildDate: string;
   items: IRssNewsItem[];
+  pagination?: IPagination;
 }

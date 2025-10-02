@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 
 @Component({
@@ -7,7 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./pagination.component.css']
 })
 export class PaginationComponent {
-  
+  @Output() pageChange = new EventEmitter<number>();
 
+  onPageChange(page: number): void {
+    this.pageChange.emit(page);
+  }
 }
 
