@@ -6,6 +6,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { ExtractWordPipe } from './pipes/extract-word.pipe';
 import { RssNewsComponent } from './rss-news/rss-news.component';
 import { SelectMenuComponent } from './select-menu/select-menu.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { SelectMenuComponent } from './select-menu/select-menu.component';
     SidebarComponent,
     ExtractWordPipe,
     RssNewsComponent,
-    SelectMenuComponent
+    SelectMenuComponent,
+    PaginationComponent
   ],
   imports: [
     CommonModule
@@ -26,7 +28,8 @@ import { SelectMenuComponent } from './select-menu/select-menu.component';
     SidebarComponent,
     ExtractWordPipe,
     RssNewsComponent,
-    SelectMenuComponent
+    SelectMenuComponent,
+    PaginationComponent
   ]
 })
 export class SharedModule { }

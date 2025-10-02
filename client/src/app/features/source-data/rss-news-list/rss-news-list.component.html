@@ -9,23 +9,25 @@
                     {{ rssNewsLilst.description }}
                 </p>
             </div>
-            <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-                    <article *ngFor="let item of rssNewsLilst.items"
-                        class="border-l-4 border-stats-green pl-4 hover:bg-gray-50 transition-colors cursor-pointer"
-                        (click)="openLink(item.link)">
-                        <h4 class="font-medium text-gray-900 mb-1">
-                            {{ item.description || item.title }}
-                        </h4>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">
-                                {{ item.pubDate | date : "dd/MM/yyyy" }}
-                            </span>
-                            <span class="text-xs text-stats-blue hover:underline">
-                                Read more →
-                            </span>
-                        </div>
-                    </article>
-                </div>
+            <div
+                class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                <article *ngFor="let item of rssNewsLilst.items"
+                    class="border-l-4 border-stats-green pl-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                    (click)="openLink(item.link)">
+                    <h4 class="font-medium text-gray-900 mb-1">
+                        {{ item.description || item.title }}
+                    </h4>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500">
+                            {{ item.pubDate | date : "dd/MM/yyyy" }}
+                        </span>
+                        <span class="text-xs text-stats-blue hover:underline">
+                            Read more →
+                        </span>
+                    </div>
+                </article>
             </div>
+            <app-pagination></app-pagination>
+        </div>
     </ng-container>
 </div>

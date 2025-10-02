@@ -26,7 +26,7 @@ export class RssNewsListComponent implements OnInit {
 
   loadAllRssNesw(): void {
     this.rssNewsService.getRssNews().pipe(take(1)).subscribe({
-      next: (data) => console.log(data)
+      next: (data) => console.log("Paginated RSS Data:", data)
     });
   }
 

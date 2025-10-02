@@ -3,7 +3,8 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
 import { ApiService } from 'src/app/api.service';
 import { IRssNews } from 'src/app/interfaces/rssNews';
-import { parseXmlToJson } from 'src/app/shared/util/xml-parser'
+import { createPaginatedResponse } from 'src/app/shared/utils/create-paginates-response';
+import { parseXmlToJson } from 'src/app/shared/utils/xml-parser'
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +16,14 @@ export class RssNewsService implements OnDestroy {
 
   constructor(private apiService: ApiService) { }
 
-  getRssNews(): Observable<IRssNews> {
+  getRssNews(page: number = 1, limit: number = 10): Observable<IRssNews> {
     return this.apiService.getRssNews().pipe(
       map((response: string) => {
-        return parseXmlToJson(response)
+        const parsedData = parseXmlToJson(response);
+
+        return createPaginatedResponse(parsedData, page, limit);
+        
       }),
-      map((rss: IRssNews) => ({
-        ...rss,
-        items: rss.items.slice(0, 15)
-      })),
       tap((response: IRssNews) => {
         this.rssNews$$.next(response);
       }),
