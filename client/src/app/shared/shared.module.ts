@@ -11,6 +11,9 @@ import { PaginationComponent } from './pagination/pagination.component';
 
 import { ExtractWordPipe } from './pipes/extract-word.pipe';
 import { SearchPipe } from './pipes/search.pipe';
+import { SearchBoxComponent } from './search-box/search-box.component';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -23,11 +26,14 @@ import { SearchPipe } from './pipes/search.pipe';
     RssNewsComponent,
     SelectMenuComponent,
     PaginationComponent,
+    SearchBoxComponent,
     
   ],
   imports: [
     CommonModule,
-    NgxPaginationModule 
+    FormsModule,
+    NgxPaginationModule,
+    MatIconModule 
   ],
   exports: [
     RecentUpdatesComponent,
@@ -38,6 +44,7 @@ import { SearchPipe } from './pipes/search.pipe';
     RssNewsComponent,
     SelectMenuComponent,
     PaginationComponent,
+    SearchBoxComponent,
    
   ]
 })

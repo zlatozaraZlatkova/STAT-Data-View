@@ -16,6 +16,7 @@ export class RssNewsListComponent implements OnInit, OnDestroy {
 
   currentPage: number = 1;
   itemsPerPage: number = 10;
+  searchText: string = '';
 
   constructor(
     private rssNewsService: RssNewsService,
@@ -49,6 +50,11 @@ export class RssNewsListComponent implements OnInit, OnDestroy {
 
   openLink(link: string): void {
     window.open(link, '_blank');
+  }
+
+  onSearchChange($event: string): void {
+    this.searchText = $event;
+    this.currentPage = 1;
   }
 
   ngOnDestroy(): void {

@@ -1,0 +1,19 @@
+<div class="flex px-4 py-3 rounded-md border-2 border-blue-500 overflow-hidden max-w-md mx-auto">
+  <input
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearchChange()"
+    placeholder="Search..."
+    type="text"
+    class="w-full outline-none bg-transparent text-gray-600 text-sm"
+  />
+
+  <mat-icon *ngIf="!searchText" class="fill-gray-600 mr-3"> search </mat-icon>
+
+  <button *ngIf="searchText"
+    (click)="onClearSearch()"
+    class="ml-2 text-gray-400 hover:text-gray-600"
+    type="button"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
