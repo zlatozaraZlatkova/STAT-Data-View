@@ -5,10 +5,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { RecentUpdatesComponent } from './recent-updates/recent-updates.component';
 import { CustomButtonComponent } from './custom-button/custom-button.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { ExtractWordPipe } from './pipes/extract-word.pipe';
 import { RssNewsComponent } from './rss-news/rss-news.component';
 import { SelectMenuComponent } from './select-menu/select-menu.component';
 import { PaginationComponent } from './pagination/pagination.component';
+
+import { ExtractWordPipe } from './pipes/extract-word.pipe';
+import { SearchPipe } from './pipes/search.pipe';
 
 
 @NgModule({
@@ -17,9 +19,11 @@ import { PaginationComponent } from './pagination/pagination.component';
     CustomButtonComponent,
     SidebarComponent,
     ExtractWordPipe,
+    SearchPipe,
     RssNewsComponent,
     SelectMenuComponent,
-    PaginationComponent
+    PaginationComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -30,9 +34,11 @@ import { PaginationComponent } from './pagination/pagination.component';
     CustomButtonComponent,
     SidebarComponent,
     ExtractWordPipe,
+    SearchPipe,
     RssNewsComponent,
     SelectMenuComponent,
-    PaginationComponent
+    PaginationComponent,
+   
   ]
 })
 export class SharedModule { }
