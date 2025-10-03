@@ -38,6 +38,8 @@ A dynamic tool for visualizing statistical data with Chart.js, powered by the Eu
 - **Real-time News Updates** - Converts XML RSS feeds into JSON and exposes them through reactive streams
 - **RxJS Powered** - Keeps news items up to date with RxJS observables
 - **Seamless Navigation** - Smooth navigation to both internal pages and external article links
+- **Client-side Pagination** - Efficient navigation through large datasets by splitting results into manageable pages directly in the browser, improving usability and performance  
+- **Search Functionality** - Dynamic filtering of displayed data based on user input, providing instant and responsive results without additional API requests  
 
 ### Application Preview
 
@@ -70,6 +72,7 @@ _Custom 404 error page_
 - **Styling:** CSS3 + Tailwind CSS 3.4.17
 - **HTTP Client:** Angular HttpClient
 - **XML Parser:** fast-xml-parser 5.2.5
+- **NGX Pagination**: 6.0.3
 
 ### Development Tools
 
@@ -210,11 +213,13 @@ App Module
 │       └── RSS News List
 └── Shared Module
     ├── Custom Button
+    ├── Pagination
     ├── Pipes
     ├── Recent Updates
     ├── RSS News
     ├── Select Menu
     ├── Sidebar
+    ├── Search Box
     └── Utilities
 ```
 
