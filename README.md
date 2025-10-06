@@ -32,6 +32,17 @@ A dynamic tool for visualizing statistical data with Chart.js, powered by the Eu
 - **Enhanced API Parameter Handling** - Improved processing of input parameters for Eurostat API requests to ensure accurate data retrieval
 - **Mapping Layer** - Converts Eurostat API responses into an internal format optimized for Chart.js visualizations
 - **Robust Data Transformation** - Reliable pipeline for data normalization, handling missing values, and format adaptation
+  
+### Global Error Handling
+
+- **Centralized Error Control** – A unified system that detects and manages errors across the entire application, ensuring consistent and reliable behavior  
+- **Smart Interception** – All HTTP and runtime errors are automatically captured before they reach the user interface  
+- **ErrorHandlingService** – Processes, classifies, and formats error messages so they can be handled gracefully  
+- **User-friendly Notifications** – Clear and non-intrusive messages are displayed using the ngx-toastr library, providing instant feedback to users without interrupting their workflow
+- **Improved Stability** – Prevents unexpected crashes, simplifies debugging, and keeps the application running smoothly under all conditions  
+
+**Flow:** `Interceptor → ErrorHandlingService → AppComponent → Toaster`
+
 
 ### RSS Feed Integration
 
@@ -64,56 +75,32 @@ _Custom 404 error page_
 
 ### Frontend
 
-- **Framework:** Angular 16.2.x
-- **Language:** TypeScript 5.1.3
-- **UI Components:** Angular Material 16.2.14
-- **Charts:** Chart.js 3.9.1 with ng2-charts 4.1.1
-- **State Management:** RxJS 7.8.x
-- **Styling:** CSS3 + Tailwind CSS 3.4.17
-- **HTTP Client:** Angular HttpClient
-- **XML Parser:** fast-xml-parser 5.2.5
-- **NGX Pagination**: 6.0.3
+- **Framework:** Angular  
+- **Language:** TypeScript  
+- **UI Components:** Angular Material  
+- **Charts:** Chart.js with ng2-charts  
+- **State Management:** RxJS  
+- **Styling:** Tailwind CSS  
+- **HTTP Client:** Angular HttpClient  
+- **XML Parsing:** fast-xml-parser  
+- **Pagination:** NGX Pagination  
+- **Toastr:** NGX-Toastr
 
 ### Development Tools
 
-- **Package Manager:** npm
-- **Build Tool:** Angular CLI 16.2.16
-- **Testing:** Jasmine 4.6.0 & Karma 6.4.0
-- **Proxy Middleware:** http-proxy-middleware 2.0.6
-- **CSS Processing:** PostCSS 8.5.6 + Autoprefixer 10.4.21
+- **Package Manager:** npm  
+- **Build Tool:** Angular CLI  
+- **Testing:** Jasmine & Karma  
+- **Proxy Middleware:** http-proxy-middleware  
+- **CSS Processing:** PostCSS + Autoprefixer  
 
 ### External APIs
 
-- **Eurostat REST API** - Statistical data source
-- **RSS Feeds** - News integration (XML to JSON)
+- **Eurostat REST API** – Source of statistical data  
+- **RSS Feeds** – News integration (XML → JSON conversion)
 
 </details>
 
-## Prerequisites
-
-<details>
-<summary>Click to expand</summary>
-
-Before you begin, ensure you have the following installed:
-
-- **Node.js** >= 16.x (recommended: 18.x or 20.x)
-- **npm** >= 8.x (comes with Node.js)
-- **Git** (for cloning the repository)
-
-**Compatible versions for this project:**
-
-- Angular 16.2.x requires Node.js ^16.14.0 or ^18.10.0
-- TypeScript 5.1.3
-
-To verify your installations:
-
-```bash
-node --version
-npm --version
-git --version
-```
-
-</details>
 
 ## Installation
 
@@ -203,6 +190,8 @@ App Module
 │   ├── Header
 │   ├── Footer
 │   ├── Page Not Found
+│   ├── Config
+│   ├── Interceptors
 │   └── Services
 ├── Features Module
 │   └── Source Data Module
@@ -316,16 +305,6 @@ The application is deployed on Netlify: [stat-data-view.netlify.app](https://sta
 
 </details>
 
-## Acknowledgments
-
-<details>
-<summary>Click to expand</summary>
-
-- **Eurostat** for providing the statistical data API
-- **Chart.js** for the excellent charting library
-- **Angular Team** for the robust framework
-
-</details>
 
 ## License
 
