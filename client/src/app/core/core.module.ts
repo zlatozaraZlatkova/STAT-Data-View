@@ -7,6 +7,8 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SharedModule } from '../shared/shared.module';
+import { errorInterceptor } from './interceptors/error.interceptor';
+
 
 
 @NgModule({
@@ -24,6 +26,9 @@ import { SharedModule } from '../shared/shared.module';
   exports: [
     HeaderComponent,
     FooterComponent
+  ],
+  providers: [
+    errorInterceptor
   ]
 })
 export class CoreModule { }
