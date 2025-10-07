@@ -16,8 +16,9 @@ describe('FooterComponent', () => {
     component = fixture.componentInstance;
   });
 
-  function getLinkByTestId(testId: string): HTMLElement {
-    return fixture.nativeElement.querySelector(`[data-testid=${testId}]`);
+
+  function getLinkByTestId(testId: string): HTMLElement | null {
+    return fixture.nativeElement.querySelector(`[data-testid="${testId}"]`);
   }
 
   it('should create', () => {
@@ -28,7 +29,7 @@ describe('FooterComponent', () => {
     const links = [
       { testId: 'link-terms', text: 'Terms', route: '/terms' },
       { testId: 'link-privacy', text: 'Privacy', route: '/privacy' },
-      { testId: 'link-contact', text: 'Contact', route: '/contact' },
+      { testId: 'link-api', text: 'API', route: '/api' },
     ];
 
     it('should render all links with correct text and routes', () => {
@@ -39,14 +40,14 @@ describe('FooterComponent', () => {
 
         expect(link).withContext(`${text} link should exist`).toBeTruthy();
 
-        expect(link.textContent.trim())
-          .withContext(`${text} link should have correct text`)
+        expect(link?.textContent?.trim() ?? '') 
+          .withContext(`${text} link text`)
           .toBe(text);
 
-        expect(link.getAttribute('routerlink'))
-          .withContext(`${text} link should point to ${route}`)
+        expect(link?.getAttribute('routerlink') ?? '') 
+          .withContext(`${text} link route`)
           .toBe(route);
-      });
+      })
     });
 
     it('should have correct CSS classes for all links', () => {
@@ -55,13 +56,17 @@ describe('FooterComponent', () => {
       links.forEach(({ testId, text }) => {
         const link = getLinkByTestId(testId);
 
-        expect(link.classList.contains('text-gray-600'))
-          .withContext(`${text} link should have text-gray-600 class`)
+        expect(link).withContext(`${text} link exists`).toBeTruthy(); 
+
+        expect(link?.classList.contains('text-gray-600'))
+          .withContext(`${text} link text-gray-600 class`)
           .toBe(true);
-        expect(link.classList.contains('hover:text-blue-600'))
-          .withContext(`${text} link should have text-gray-600 class`)
+
+        expect(link?.classList.contains('hover:text-blue-600'))
+          .withContext(`${text} link hover:text-blue-600 class`)
           .toBe(true);
       });
+
     });
 
     it('should navigate to correct page when link is clicked', () => {
@@ -70,10 +75,11 @@ describe('FooterComponent', () => {
       links.forEach(({ testId, text, route }) => {
         const link = getLinkByTestId(testId);
 
-        expect(link.getAttribute('routerlink'))
-          .withContext(`${text} link should navigate to ${route}`)
+        expect(link?.getAttribute('routerlink') ?? '')
+          .withContext(`${text} link route`)
           .toBe(route);
       });
+
     });
 
     it('should have routerLinkActive directive', () => {
@@ -82,10 +88,11 @@ describe('FooterComponent', () => {
       links.forEach(({ testId, text }) => {
         const link = getLinkByTestId(testId);
 
-        expect(link.getAttribute('routerlinkactive'))
-          .withContext(`${text} link routerLinkActive classes`)
+        expect(link?.getAttribute('routerlinkactive') ?? '')
+          .withContext(`${text} link routerLinkActive`)
           .toBe('border-b-2 border-blue-600');
       });
+
     });
 
     it('should not find non-existent link', () => {
@@ -104,13 +111,15 @@ describe('FooterComponent', () => {
       links.forEach(({ testId, text }) => {
         const link = getLinkByTestId(testId);
 
-        expect(() => link.click())
-          .withContext(`${text} link click should not throw`)
+        expect(link).withContext(`${text} link exists`).toBeTruthy();
+
+        expect(() => link?.click())
+          .withContext(`${text} link click`)
           .not.toThrow();
       });
+
     });
 
-    
   });
 
 
