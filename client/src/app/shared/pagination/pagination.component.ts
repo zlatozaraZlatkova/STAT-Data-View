@@ -9,8 +9,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class PaginationComponent {
   @Output() pageChange = new EventEmitter<number>();
 
-  onPageChange(page: number): void {
-    this.pageChange.emit(page);
+
+  onPageChange(page: number | null | undefined): void {
+    if (page != null && page > 0) {
+      this.pageChange.emit(page);
+    }
   }
+  
 }
 

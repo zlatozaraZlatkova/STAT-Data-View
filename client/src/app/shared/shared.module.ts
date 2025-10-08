@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { RecentUpdatesComponent } from './recent-updates/recent-updates.component';
-import { CustomButtonComponent } from './custom-button/custom-button.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
 import { RssNewsComponent } from './rss-news/rss-news.component';
 import { SelectMenuComponent } from './select-menu/select-menu.component';
 import { PaginationComponent } from './pagination/pagination.component';
@@ -19,8 +17,6 @@ import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   declarations: [
     RecentUpdatesComponent,
-    CustomButtonComponent,
-    SidebarComponent,
     ExtractWordPipe,
     SearchPipe,
     RssNewsComponent,
@@ -37,8 +33,6 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   exports: [
     RecentUpdatesComponent,
-    CustomButtonComponent,
-    SidebarComponent,
     ExtractWordPipe,
     SearchPipe,
     RssNewsComponent,
