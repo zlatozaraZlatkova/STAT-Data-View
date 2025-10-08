@@ -1,209 +1,108 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, shareReplay, switchMap, tap } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { shareReplay, startWith, switchMap } from 'rxjs';
+
 import { ApiService } from 'src/app/api.service';
-import { IEstatDataset } from 'src/app/interfaces/metricData';
+
 
 @Injectable({
   providedIn: 'root',
 })
-export class DataService implements OnDestroy {
-  private population$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  population$ = this.population$$.asObservable();
 
-  private gdp$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  gdp$ = this.gdp$$.asObservable();
+export class DataService {
 
-  private employment$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  employment$ = this.employment$$.asObservable();
+  constructor(private apiService: ApiService) { }
 
-  private inflation$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  inflation$ = this.inflation$$.asObservable();
+  population$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getPopulation().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  private tradeBalance$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  tradeBalance$ = this.tradeBalance$$.asObservable();
+  gdp$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getGDP().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  private foreignDirectInvestment$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  foreignDirectInvestment$ = this.foreignDirectInvestment$$.asObservable();
+  employment$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getEmployment().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  private governmentDebt$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  governmentDebt$ = this.governmentDebt$$.asObservable();
+  inflation$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getInflation().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  private govDeficitSurplus$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  govDeficitSurplus$ = this.govDeficitSurplus$$.asObservable();
+  tradeBalance$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getTradeBalance().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  private industryProduction$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  industryProduction$ = this.industryProduction$$.asObservable();
+  foreignDirectInvestment$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getForeignDirectInvestment().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  private nominalCapitaIncomeGrowth$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  nominalCapitaIncomeGrowth$ = this.nominalCapitaIncomeGrowth$$.asObservable();
+  governmentDebt$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getGovernmentDebt().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  private realPerCapitaIncomeGrowth$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  realPerCapitaIncomeGrowth$ = this.realPerCapitaIncomeGrowth$$.asObservable();
+  govDeficitSurplus$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getGovernmentDeficitSurplus().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  private savingRate$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  savingRate$ = this.savingRate$$.asObservable();
+  industryProduction$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getProductionInInductrie().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  private investmentRate$$ = new BehaviorSubject<IEstatDataset | null>(null);
-  investmentRate$ = this.investmentRate$$.asObservable();
+  nominalCapitaIncomeGrowth$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getNominalPerCapitaIncomeGrowth().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  constructor(private apiService: ApiService) {}
+  realPerCapitaIncomeGrowth$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getRealPerCapitaIncomeGrowth().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  getNominalCapitaIncomeGrowth(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.nominalCapitaIncomeGrowth$$.next(null)), 
-      switchMap(() => this.apiService.getNominalPerCapitaIncomeGrowth()),
-      tap((response) => {
-        this.nominalCapitaIncomeGrowth$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
+  savingRate$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getSavingRate().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  getRealCapitaIncomeGrowth(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.realPerCapitaIncomeGrowth$$.next(null)),
-      switchMap(() => this.apiService.getRealPerCapitaIncomeGrowth()),
-      tap((response) => {
-        this.realPerCapitaIncomeGrowth$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
+  investmentRate$ = this.apiService.selectedCountry$.pipe(
+    switchMap(() => this.apiService.getInvestmentRate().pipe(
+      startWith(null)
+    )),
+    shareReplay(1)
+  );
 
-  getSavingRate(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.savingRate$$.next(null)),
-      switchMap(() => this.apiService.getSavingRate()),
-      tap((response) => {
-        this.savingRate$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
 
-  getInvestmentRate(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.investmentRate$$.next(null)),
-      switchMap(() => this.apiService.getInvestmentRate()),
-      tap((response) => {
-        this.investmentRate$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
 
-  getPopulation(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.population$$.next(null)),
-      switchMap(() => this.apiService.getPopulation()),
-      tap((response) => {
-        this.population$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
-
-  getGdp(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.gdp$$.next(null)),
-      switchMap(() => this.apiService.getGDP()),
-      tap((response) => {
-        this.gdp$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
-
-  getEmployment(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.employment$$.next(null)),
-      switchMap(() => this.apiService.getEmployment()),
-      tap((response) => {
-        this.employment$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
-
-  getInflation(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.inflation$$.next(null)),
-      switchMap(() => this.apiService.getInflation()),
-      tap((response) => {
-        this.inflation$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
-
-  getTotalTradeBalance(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.tradeBalance$$.next(null)),
-      switchMap(() => this.apiService.getTradeBalance()),
-      tap((response) => {
-        this.tradeBalance$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
-
-  getDirectInvestmentPctGdp(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.foreignDirectInvestment$$.next(null)),
-      switchMap(() => this.apiService.getForeignDirectInvestment()),
-      tap((response) => {
-        this.foreignDirectInvestment$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
-
-  governmentDebt(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.governmentDebt$$.next(null)),
-      switchMap(() => this.apiService.getGovernmentDebt()),
-      tap((response) => {
-        this.governmentDebt$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
-
-  govDeficitSurplus(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.govDeficitSurplus$$.next(null)),
-      switchMap(() => this.apiService.getGovernmentDeficitSurplus()),
-      tap((response) => {
-        this.govDeficitSurplus$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
-
-  getIndustryProduction(): Observable<IEstatDataset> {
-    return this.apiService.selectedCountry$.pipe(
-      tap(() => this.industryProduction$$.next(null)),
-      switchMap(() => this.apiService.getProductionInInductrie()),
-      tap((response) => {
-        this.industryProduction$$.next(response);
-      }),
-      shareReplay(1)
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.population$$.complete();
-    this.gdp$$.complete();
-    this.employment$$.complete();
-    this.inflation$$.complete();
-    this.tradeBalance$$.complete();
-    this.foreignDirectInvestment$$.complete();
-    this.governmentDebt$$.complete();
-    this.industryProduction$$.complete();
-    this.govDeficitSurplus$$.complete();
-    this.nominalCapitaIncomeGrowth$$.complete();
-    this.realPerCapitaIncomeGrowth$$.complete();
-    this.savingRate$$.complete();
-    this.investmentRate$$.complete();
-  }
 }

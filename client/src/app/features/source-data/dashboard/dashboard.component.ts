@@ -1,6 +1,6 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { DataService } from '../data.service';
-import { catchError, combineLatest, filter, Observable, of, take } from 'rxjs';
+import { combineLatest, filter, Observable } from 'rxjs';
 import { IEstatDataset } from 'src/app/interfaces/metricData';
 
 @Component({
@@ -8,7 +8,7 @@ import { IEstatDataset } from 'src/app/interfaces/metricData';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
   isSidebarOpen = signal(true);
 
   metricsData$: Observable<IEstatDataset[] | null> = combineLatest([
@@ -16,25 +16,9 @@ export class DashboardComponent implements OnInit {
     this.dataService.gdp$.pipe(filter((data): data is IEstatDataset => data !== null)),
     this.dataService.employment$.pipe(filter((data): data is IEstatDataset => data !== null)),
     this.dataService.inflation$.pipe(filter((data): data is IEstatDataset => data !== null))
-  ]).pipe(
-    catchError(err => {
-      console.error('Error loading metrics:', err);
-      return of(null);
-    })
-  );
+  ]);
 
   constructor(private dataService: DataService) { }
-
-  ngOnInit(): void {
-    this.loadAllData();
-  }
-
-  private loadAllData() {
-    this.dataService.getPopulation().pipe(take(1)).subscribe();
-    this.dataService.getGdp().pipe(take(1)).subscribe();
-    this.dataService.getEmployment().pipe(take(1)).subscribe();
-    this.dataService.getInflation().pipe(take(1)).subscribe();
-  }
 
   onToggleSidebar(): void {
     this.isSidebarOpen.update((currentValue) => !currentValue);

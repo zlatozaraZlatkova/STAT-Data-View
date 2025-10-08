@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { IEstatDataset } from 'src/app/interfaces/metricData';
-import { DataService } from '../data.service';
-import { ApiService } from 'src/app/api.service';
-import { Subject, takeUntil, take } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+
+import { IEstatDataset } from 'src/app/interfaces/metricData';
+import { DataService } from '../data.service';
+
 
 @Component({
   selector: 'app-chart',
@@ -19,18 +20,9 @@ export class ChartComponent implements OnInit, OnDestroy {
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.initializeData();
     this.setupDataSubscriptions();
   }
 
-
-  private initializeData(): void {
-    this.dataService.getTotalTradeBalance().pipe(take(1)).subscribe();
-    this.dataService.getDirectInvestmentPctGdp().pipe(take(1)).subscribe();
-    this.dataService.governmentDebt().pipe(take(1)).subscribe();
-    this.dataService.getIndustryProduction().pipe(take(1)).subscribe();
-    this.dataService.govDeficitSurplus().pipe(take(1)).subscribe();
-  }
 
   private setupDataSubscriptions(): void {
 
@@ -188,9 +180,10 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   private updateChartWithData(data: IEstatDataset, dataIndex: number): void {
     if (!this.hasValidData(data)) {
-      // console.log(`Chart: No data available for dataset ${dataIndex}`);
       this.chartData.datasets[dataIndex].data = [];
+      
       this.chart?.update();
+
       return;
     }
 
