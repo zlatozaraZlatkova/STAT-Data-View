@@ -279,7 +279,7 @@ npm test
 Generate coverage report:
 
 ```bash
-npm run test:coverage
+ng test --no-watch --code-coverage
 ```
 
 Coverage reports are generated in `coverage/` directory.
