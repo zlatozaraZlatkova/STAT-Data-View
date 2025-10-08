@@ -10,8 +10,14 @@ export class SearchBoxComponent {
   searchText: string = '';
 
   onSearchChange(): void {
+    if (!this.searchText) {
+      return
+    }
+
     this.searchChange.emit(this.searchText);
   }
+
+
   onClearSearch(): void {
     this.searchText = '';
     this.searchChange.emit();
