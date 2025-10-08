@@ -1,4 +1,5 @@
-<div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg border border-gray-200/50 backdrop-blur-sm flex flex-col h-[634px]">
+<div
+    class="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg border border-gray-200/50 backdrop-blur-sm flex flex-col h-[634px]">
     <div class="flex items-center justify-between mb-6">
         <h3 class="text-xl font-semibold text-gray-900">RSS News</h3>
         <button (click)="redirectTo()" class="text-sm text-blue-600 hover:text-blue-700 transition-colors">
@@ -7,40 +8,41 @@
     </div>
 
     <div class="space-y-4 flex-1 overflow-y-auto">
-        <ng-container *ngIf="rssNews$ | async as rssNews">
-
-            <div class="mb-4 pb-2 border-b border-gray-200">
-                <h4 class="font-medium text-gray-900">{{ rssNews.title }}</h4>
-                <p class="text-xs text-gray-500">
-                    Last updated: {{ rssNews.lastBuildDate | date : "dd/MM/yyyy HH:mm" }}
-                </p>
-            </div>
-
-            <article *ngFor="let item of (shortListRssNews$ | async)"
-                class="text-sm border-l-4 border-blue-500 pl-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer rounded-r"
-                (click)="openLink(item.link)">
-                <h4 class="font-medium text-gray-900 mb-1"> {{ item.description || item.title }}</h4>
-                <div class="flex justify-between items-center">
-                    <span class="text-xs text-gray-500">
-                        {{ item.pubDate | date : "dd/MM/yyyy" }}
-                    </span>
-                    <span class="text-xs text-blue-600 hover:text-blue-700 transition-colors cursor-pointer">
-                        Read more <span aria-hidden="true">&rarr;</span>
-                    </span>
+        <ng-container *ngIf="rssNews$ | async as rssNews; else noData">
+            <div data-testid="rss-news">
+                <div class="mb-4 pb-2 border-b border-gray-200">
+                    <h4 class="font-medium text-gray-900">{{ rssNews.title }}</h4>
+                    <p class="text-xs text-gray-500">
+                        Last updated: {{ rssNews.lastBuildDate | date : "dd/MM/yyyy HH:mm" }}
+                    </p>
                 </div>
-            </article>
+
+                <article *ngFor="let item of (shortListRssNews$ | async)"
+                    class="text-sm border-l-4 border-blue-500 pl-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer rounded-r"
+                    (click)="openLink(item.link)">
+                    <h4 class="font-medium text-gray-900 mb-1"> {{ item.description || item.title }}</h4>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500">
+                            {{ item.pubDate | date : "dd/MM/yyyy" }}
+                        </span>
+                        <span class="text-xs text-blue-600 hover:text-blue-700 transition-colors cursor-pointer">
+                            Read more <span aria-hidden="true">&rarr;</span>
+                        </span>
+                    </div>
+                </article>
 
 
-            <div *ngIf="rssNews.items.length === 0" class="text-center py-8">
-                <p class="text-gray-500">No news available</p>
+                <div *ngIf="rssNews.items.length === 0" class="text-center py-8">
+                    <p class="text-gray-500">No news available</p>
+                </div>
             </div>
         </ng-container>
 
-        <div *ngIf="!(rssNews$ | async)" class="text-center py-8">
-            <p class="text-gray-500">No RSS data loaded yet</p>
+        <ng-template #noData class="text-center py-8">
+            <p data-testid="no-data" class="text-gray-500">No RSS data loaded yet</p>
             <button (click)="loadRssNews()" class="text-sm text-blue-600 hover:text-blue-700 transition-colors">
                 Load RSS news
             </button>
-        </div>
+        </ng-template>
     </div>
 </div>
