@@ -8,20 +8,26 @@ import { FooterComponent } from './core/footer/footer.component';
 import { MatIconModule } from '@angular/material/icon';
 import { SelectMenuComponent } from './shared/select-menu/select-menu.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ErrorHandlingService } from './core/services/error-handling.service';
+import { Subject } from 'rxjs';
 
-class ToastrServiceStub {
-  success() { }
-  error() { }
-  info() { }
-  warning() { }
-}
 
 describe('AppComponent', () => {
+  const mockToastrService = jasmine.createSpyObj('ToastrService',
+    ['success', 'error', 'info', 'warning']
+  );
+  const mockErrorHandlingService = jasmine.createSpyObj('ErrorHandlingService', [], {
+    errorMessage$: new Subject<string>()
+  });
+
+
+
   beforeEach(() => TestBed.configureTestingModule({
     declarations: [AppComponent, LayoutComponent, HeaderComponent, FooterComponent, SelectMenuComponent],
     imports: [RouterTestingModule, MatIconModule, HttpClientTestingModule],
     providers: [
-      { provide: ToastrService, useClass: ToastrServiceStub }
+      { provide: ErrorHandlingService, useValue: mockErrorHandlingService },
+      { provide: ToastrService, useValue: mockToastrService }
     ]
   }));
 
@@ -37,5 +43,49 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('client');
   });
 
- 
+
+  it('should call displayError on ngOnInit', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+
+    spyOn<any>(app, 'displayError');
+    fixture.detectChanges();
+
+    expect(app['displayError']).toHaveBeenCalled();
+  });
+
+
+  it('should display error message when errorMessage$ emits', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const testErrorMessage = 'Test error message';
+
+    fixture.detectChanges();
+
+    mockErrorHandlingService.errorMessage$.next(testErrorMessage);
+
+
+    expect(mockToastrService.error).toHaveBeenCalledWith(testErrorMessage, 'Error');
+    expect(mockToastrService.error).toHaveBeenCalledTimes(1);
+
+  })
+
+
+  it('should not display error after ngOnDestroy', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const testErrorMessage = 'Should not display';
+    
+    fixture.detectChanges();
+
+    app.ngOnDestroy();
+
+    mockErrorHandlingService.errorMessage$.next(testErrorMessage);
+
+    expect(mockToastrService.error).not.toHaveBeenCalled();
+
+  })
+
+
+
 });
