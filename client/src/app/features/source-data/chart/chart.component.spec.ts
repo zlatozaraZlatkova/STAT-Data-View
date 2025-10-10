@@ -113,5 +113,51 @@ describe('ChartComponent', () => {
       expect(component['destroy$'].complete).toHaveBeenCalled();
     });
   });
-  
+
+  describe('UI Tests', () => {
+    it('should display "Economic indicators" title', () => {
+      fixture.detectChanges();
+
+      const title = fixture.nativeElement.querySelector('h2');
+      expect(title?.textContent?.trim()).toBe('Economic indicators');
+    });
+
+    it('should show canvas with data', () => {
+      component['updateChartWithData'](mockValidData, 0);
+      fixture.detectChanges();
+
+      const canvasEl = fixture.nativeElement.querySelector('canvas');
+      expect(canvasEl).toBeTruthy();
+      expect(canvasEl.classList.contains('w-full')).toBe(true);
+    });
+
+    it('should set correct canvas attributes', () => {
+      component['updateChartWithData'](mockValidData, 0);
+      fixture.detectChanges();
+
+      const canvasEl = fixture.nativeElement.querySelector('canvas');
+      expect(canvasEl?.getAttribute('basechart')).not.toBeNull();
+      expect(canvasEl?.getAttribute('type')).toBe('line');
+    });
+
+    it('should NOT display canvas when no data', () => {
+      component['updateChartWithData'](mockEmptyData, 0);
+      fixture.detectChanges();
+
+      const canvasEl = fixture.nativeElement.querySelector('canvas');
+      expect(canvasEl).toBeNull();
+    });
+
+    it('should display "No provided data yet" when no data', () => {
+      component['updateChartWithData'](mockEmptyData, 0);
+      fixture.detectChanges();
+
+      const pEl = fixture.nativeElement.querySelectorAll('p');
+
+      expect(pEl[0].textContent.trim()).toBe('No provided data yet');
+      expect(pEl[1].textContent.trim()).toBe(
+        'Data will appear here when available'
+      );
+    });
+  });
 });
