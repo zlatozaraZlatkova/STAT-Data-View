@@ -24,7 +24,7 @@ export class MetricCardComponent implements OnInit {
     const timeIndexArr = Object.values(data.dimension.time.category.index);
     const values = data.value;
 
-     if (!data.value || Object.keys(data.value).length === 0) {
+    if (!data.value || Object.keys(data.value).length === 0) {
       return;
     }
 
@@ -45,9 +45,10 @@ export class MetricCardComponent implements OnInit {
     if (this.currentValues !== undefined && this.previousYearValue !== undefined) {
       this.absoluteDifference = this.currentValues - this.previousYearValue;
 
-      this.percentageDifference = Number(
-        ((this.absoluteDifference / this.previousYearValue) * 100).toFixed(2)
-      );
+      this.percentageDifference = this.previousYearValue
+        ? Math.round((this.absoluteDifference / this.previousYearValue) * 100 * 100) / 100
+        : 0;
+
     }
 
   }
@@ -58,7 +59,7 @@ export class MetricCardComponent implements OnInit {
 
     if (unitCategory?.index) {
       const unitCode = Object.keys(unitCategory.index)[0];
-  
+
 
       switch (unitCode) {
         case 'THS_PER':

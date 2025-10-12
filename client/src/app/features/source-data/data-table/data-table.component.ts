@@ -58,7 +58,7 @@ export class DataTableComponent implements OnInit {
     }
 
     const values = Object.values(dataset.value) as number[];
-    
+
     if (values.length < 6) {
       return false;
     }
@@ -69,15 +69,15 @@ export class DataTableComponent implements OnInit {
 
   private formatIndicator(label: string, dataset: IEstatDataset): IHouseholdIndicators {
     const values = this.extractValues(dataset);
-    const change = values.current - values.previous;
-    const yoyChange = values.current - values.fiveYearAgo;
+    const change = Math.round((values.current - values.previous) * 20) / 20;
+    const yoyChange = Math.round((values.current - values.fiveYearAgo) * 20) / 20;
 
     return {
       label,
-      current: `${values.current.toFixed(1)}%`,
-      previous: `${values.previous.toFixed(1)}%`,
-      change: `${change >= 0 ? '+' : ''}${change.toFixed(1)}%`,
-      yoyChange: `${yoyChange >= 0 ? '+' : ''}${yoyChange.toFixed(1)}%`,
+      current: `${(Math.round(values.current * 20) / 20).toFixed(2)}%`,
+      previous: `${(Math.round(values.previous * 20) / 20).toFixed(2)}%`,
+      change: `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`,
+      yoyChange: `${yoyChange >= 0 ? '+' : ''}${yoyChange.toFixed(2)}%`,
       changeClass: change >= 0 ? 'text-green-600' : 'text-red-600',
       yoyClass: yoyChange >= 0 ? 'text-green-600' : 'text-red-600'
     };
@@ -93,7 +93,7 @@ export class DataTableComponent implements OnInit {
     };
   }
 
-    private createLastUpdatedStream(): Observable<string> {
+  private createLastUpdatedStream(): Observable<string> {
     return this.dataService.nominalCapitaIncomeGrowth$.pipe(
       map(data => data ? this.extractLastPeriod(data) : '')
     );
@@ -107,5 +107,5 @@ export class DataTableComponent implements OnInit {
     const times = Object.keys(dataset.dimension.time.category.index);
     return times[times.length - 1] || '';
   }
-  
+
 }
