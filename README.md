@@ -9,8 +9,9 @@ A dynamic tool for visualizing statistical data with Chart.js, powered by the Eu
 ## Table of Contents
 
 - [Features](#features)
+- [Application Preview](#application-preview)
 - [Technology Stack](#technology-stack)
-- [Prerequisites](#prerequisites)
+- [Technical Implementation Overview](#technical-implementation-overview)
 - [Installation](#installation)
 - [Development](#development)
 - [Project Architecture](#project-architecture)
@@ -21,38 +22,80 @@ A dynamic tool for visualizing statistical data with Chart.js, powered by the Eu
 
 ## Features
 
-### Data Visualization
+<details>
+<summary>Click to expand</summary>
 
-- **Multi-axis Charts** - Visualize different economic indicators with separate scales (e.g., percentages vs. absolute values) on a single diagram
-- **Interactive Charts** - Built with Chart.js for dynamic and responsive data visualization
-- **Real-time Data** - Direct integration with Eurostat API for up-to-date statistical information
+### Data Visualization
+- Multi-axis and interactive charts  
+- Real-time statistical data from **Eurostat API**
 
 ### Data Processing
+- API parameter handling, mapping layer, and data normalization  
 
-- **Enhanced API Parameter Handling** - Improved processing of input parameters for Eurostat API requests to ensure accurate data retrieval
-- **Mapping Layer** - Converts Eurostat API responses into an internal format optimized for Chart.js visualizations
-- **Robust Data Transformation** - Reliable pipeline for data normalization, handling missing values, and format adaptation
-  
 ### Global Error Handling
-
-- **Centralized Error Control** – A unified system that detects and manages errors across the entire application, ensuring consistent and reliable behavior  
-- **Smart Interception** – All HTTP and runtime errors are automatically captured before they reach the user interface  
-- **ErrorHandlingService** – Processes, classifies, and formats error messages so they can be handled gracefully  
-- **User-friendly Notifications** – Clear and non-intrusive messages are displayed using the ngx-toastr library, providing instant feedback to users without interrupting their workflow
-- **Improved Stability** – Prevents unexpected crashes, simplifies debugging, and keeps the application running smoothly under all conditions  
-
-**Flow:** `Interceptor → ErrorHandlingService → AppComponent → Toaster`
-
+- Centralized system with smart interception  
+- User-friendly notifications via **ngx-toastr**  
 
 ### RSS Feed Integration
+- Real-time news updates (XML → JSON)  
+- Reactive streams with RxJS, client-side pagination, search filtering  
+  
+ </details>
+  
 
-- **Real-time News Updates** - Converts XML RSS feeds into JSON and exposes them through reactive streams
-- **RxJS Powered** - Keeps news items up to date with RxJS observables
-- **Seamless Navigation** - Smooth navigation to both internal pages and external article links
-- **Client-side Pagination** - Efficient navigation through large datasets by splitting results into manageable pages directly in the browser, improving usability and performance  
-- **Search Functionality** - Dynamic filtering of displayed data based on user input, providing instant and responsive results without additional API requests  
+## Technology Stack
 
-### Application Preview
+<details>
+<summary>Click to expand</summary>
+
+### Frontend
+- Angular, TypeScript, Angular Material, Chart.js (ng2-charts), RxJS  
+- Tailwind CSS for styling, NGX Pagination, NGX-Toastr  
+
+### Development Tools
+- Angular CLI, npm, Jasmine & Karma, PostCSS + Autoprefixer  
+
+### External APIs
+- Eurostat REST API for statistical data  
+- RSS feeds for news integration  
+
+</details>
+
+## Technical Implementation Overview
+
+<details open>
+<summary>Click to expand</summary>
+
+
+| **Technical Implementation Component** | **Implementation Details**                                                        |
+| -------------------------------------- | --------------------------------------------------------------------------------- |
+| **Frontend Framework**               | **Angular** – modular, scalable architecture with lazy-loaded feature modules     |
+| **Language**                         | **TypeScript** – full type safety, interfaces, and modern ES features             |
+| **UI Library**                       | **Angular Material** – consistent design system and responsive components         |
+| **Charting Library**                 | **Chart.js** (via ng2-charts) – interactive and multi-axis visualizations         |
+| **State Management**                 | **RxJS** – reactive streams for handling data flow and component updates          |
+| **Styling**                          | **Tailwind CSS** + PostCSS + Autoprefixer for utility-first styling               |
+| **Data Source**                      | **Eurostat REST API** – real-time economic and statistical data integration       |
+| **RSS Integration**                  | **fast-xml-parser** converts XML → JSON, updated dynamically via RxJS observables |
+| **Error Handling**                   | Centralized system: `Interceptor → ErrorHandlingService → AppComponent → Toastr`  |
+| **Notification System**              | **NGX-Toastr** – non-intrusive toast notifications for user feedback              |
+| **Routing & Navigation**             | **Angular Router** with lazy loading for optimized navigation                     |
+| **Pagination**                       | **NGX Pagination** – efficient client-side paging for large datasets              |
+| **Data Transformation**              | Custom mapping layer converts Eurostat responses into Chart.js-friendly format    |
+| **Testing Framework**                | **Jasmine & Karma** – unit testing with detailed coverage reports                 |
+| **Development Tools**                | **Angular CLI** & **npm** for build automation and dependency management          |
+| **Proxy Middleware**                 | Angular proxy (`proxy.conf.json`) for local API request routing                   |
+| **Architecture Style**               | Clean modular structure: Core, Features, Shared modules                           |
+| **Deployment Platform**              | **Netlify** – CI/CD and static hosting for production builds                      |
+| **Error Prevention & Stability**     | Smart HTTP interception, consistent error formatting, and fallback mechanisms     |
+| **Code Organization**                | Structured by functionality: `core/`, `features/`, `shared/`, `interfaces/`       |
+| **API Documentation**                | Based on **Eurostat REST API** official guide                                     |
+| **Version Control**                  | **Git (GitHub)** – collaborative version management                               |
+
+</details>
+
+
+## Application Preview
 
 <details>
 <summary>Click to view screenshots</summary>
@@ -67,40 +110,6 @@ _RSS news feed integration_
 _Custom 404 error page_
 
 </details>
-
-## Technology Stack
-
-<details>
-<summary>Click to expand</summary>
-
-### Frontend
-
-- **Framework:** Angular  
-- **Language:** TypeScript  
-- **UI Components:** Angular Material  
-- **Charts:** Chart.js with ng2-charts  
-- **State Management:** RxJS  
-- **Styling:** Tailwind CSS  
-- **HTTP Client:** Angular HttpClient  
-- **XML Parsing:** fast-xml-parser  
-- **Pagination:** NGX Pagination  
-- **Toastr:** NGX-Toastr
-
-### Development Tools
-
-- **Package Manager:** npm  
-- **Build Tool:** Angular CLI  
-- **Testing:** Jasmine & Karma  
-- **Proxy Middleware:** http-proxy-middleware  
-- **CSS Processing:** PostCSS + Autoprefixer  
-
-### External APIs
-
-- **Eurostat REST API** – Source of statistical data  
-- **RSS Feeds** – News integration (XML → JSON conversion)
-
-</details>
-
 
 ## Installation
 
@@ -283,6 +292,8 @@ ng test --no-watch --code-coverage
 ```
 
 Coverage reports are generated in `coverage/` directory.
+
+**Test coverage:** **~70%** (detailed reports in coverage/ directory)
 
 </details>
 
