@@ -31,15 +31,18 @@
           </tbody>
         </table>
       </div>
-      <div class="mt-4 text-xs text-gray-500">
-        Source: Eurostat | Last updated: {{ lastUpdated$ | async }}
+      <div class="mt-4 text-right">
+        <span class="text-xs text-gray-400">
+          Source: Eurostat • {{ lastUpdated$ | async }}
+        </span>
       </div>
     </div>
   </ng-container>
 
   <ng-template #noData>
     <div class="text-center py-12">
-      <mat-icon class="mx-auto mb-4 text-gray-400" [style.font-size.px]="48" [style.width.px]="48" [style.height.px]="48">
+      <mat-icon class="mx-auto mb-4 text-gray-400" [style.font-size.px]="48" [style.width.px]="48"
+        [style.height.px]="48">
         equalizer
       </mat-icon>
       <p class="text-gray-500 text-base">No provided data yet</p>

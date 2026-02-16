@@ -1,10 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IEstatDataset } from 'src/app/interfaces/metricData';
-import {
-  isMultiDimensional,
-  processMultiDimensionalData,
-  processSimpleData,
-} from '../../../shared/utils/dataset-processor';
+import { processDataset } from '../../../shared/utils/dataset-processor';
 
 @Component({
   selector: 'app-metric-card',
@@ -30,26 +26,13 @@ export class MetricCardComponent implements OnInit {
       return;
     }
 
-    const timeIndex = data.dimension.time.category.index;
-    const years = Object.keys(timeIndex).sort();
-    const values = data.value;
-    const size = data.size;
-
-    if (years.length === 0) {
-      this.hasData = false;
-      return;
-    }
-
-    const result = isMultiDimensional(size)
-      ? processMultiDimensionalData(years, timeIndex, values, size)
-      : processSimpleData(years, timeIndex, values);
+    const result = processDataset(data);
 
     this.hasData = result.hasData;
 
     if (!result.hasData) {
       return;
     }
-
     this.currentValues = result.currentValue;
     this.previousYearValue = result.previousValue ?? 0;
 
@@ -62,8 +45,8 @@ export class MetricCardComponent implements OnInit {
       this.percentageDifference =
         this.previousYearValue !== 0
           ? Math.round(
-              (this.absoluteDifference / this.previousYearValue) * 100 * 100,
-            ) / 100
+            (this.absoluteDifference / this.previousYearValue) * 100 * 100,
+          ) / 100
           : 0;
     }
   }

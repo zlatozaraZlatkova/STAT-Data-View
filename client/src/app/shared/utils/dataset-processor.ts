@@ -1,3 +1,4 @@
+import { map, Observable } from "rxjs";
 import { ProcessedDataResult, YearWithValue } from "src/app/interfaces/dataProcessor";
 import { IEstatDataset } from "src/app/interfaces/metricData";
 
@@ -93,4 +94,25 @@ export function processSimpleData(
   } as IEstatDataset;
   
   return processDataset(dataset);
+}
+
+
+export function getLastDataYearWithUpdate(dataset$: Observable<IEstatDataset | null>): Observable<string> {
+  return dataset$.pipe(
+    map(data => {
+      if (!data) return '';
+      
+      const yearsData = getAvailableYearsWithValues(data);
+      const lastYear = yearsData.length > 0 ? yearsData[yearsData.length - 1].year : '';
+      
+      if (!lastYear) return '';
+      
+      if (data.updated) {
+        const updateDate = new Date(data.updated).toLocaleDateString('en-GB');
+        return `Data for ${lastYear}, updated on ${updateDate}`;
+      }
+      
+      return `Data for ${lastYear}`;
+    })
+  );
 }

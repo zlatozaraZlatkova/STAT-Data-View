@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { map, Subject, takeUntil } from 'rxjs';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
 import { IEstatDataset } from 'src/app/interfaces/metricData';
 import { DataService } from '../data.service';
-
+import { getAvailableYearsWithValues, getLastDataYearWithUpdate } from 'src/app/shared/utils/dataset-processor';
 
 @Component({
   selector: 'app-chart',
@@ -14,63 +14,12 @@ import { DataService } from '../data.service';
 })
 export class ChartComponent implements OnInit, OnDestroy {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+  
   public chartType: ChartType = 'line';
   private destroy$ = new Subject<void>();
+  private readonly YEARS_TO_DISPLAY = 10;
 
-  constructor(private dataService: DataService) { }
-
-  ngOnInit(): void {
-    this.setupDataSubscriptions();
-  }
-
-
-  private setupDataSubscriptions(): void {
-
-    this.dataService.tradeBalance$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(data => {
-      if (data) {
-        // console.log('Chart: Trade Balance updated', data);
-        this.updateChartWithData(data, 0);
-      }
-    });
-
-    this.dataService.foreignDirectInvestment$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(data => {
-      if (data) {
-        //console.log('Chart: FDI updated', data);
-        this.updateChartWithData(data, 1);
-      }
-    });
-
-    this.dataService.governmentDebt$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(data => {
-      if (data) {
-        //console.log('Chart: Government Debt updated', data);
-        this.updateChartWithData(data, 2);
-      }
-    });
-
-    this.dataService.industryProduction$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(data => {
-      if (data) {
-        //console.log('Chart: Industry Production updated', data);
-        this.updateChartWithData(data, 3);
-      }
-    });
-
-    this.dataService.govDeficitSurplus$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(data => {
-      if (data) {
-        // console.log('Chart: Deficit/Surplus updated', data);
-        this.updateChartWithData(data, 4);
-      }
-    });
-  }
+  lastUpdated$ = getLastDataYearWithUpdate(this.dataService.tradeBalance$);
 
   public chartData: ChartConfiguration<'line'>['data'] = {
     labels: [],
@@ -136,7 +85,6 @@ export class ChartComponent implements OnInit, OnDestroy {
           usePointStyle: true,
         },
       }
-
     },
     scales: {
       y: {
@@ -151,47 +99,41 @@ export class ChartComponent implements OnInit, OnDestroy {
     },
   };
 
-  private hasValidData(data: IEstatDataset): boolean {
-    return data && data.value && Object.keys(data.value).length > 0;
+  constructor(private dataService: DataService) { }
+
+  ngOnInit(): void {
+    this.setupDataSubscriptions();
   }
 
-  private filterDataByYearAndValues(data: IEstatDataset): Array<[string, number | null]> {
-    if (!this.hasValidData(data)) {
-      return [];
-    }
+  private setupDataSubscriptions(): void {
+    const datasets$ = [
+      this.dataService.tradeBalance$,
+      this.dataService.foreignDirectInvestment$,
+      this.dataService.governmentDebt$,
+      this.dataService.industryProduction$,
+      this.dataService.govDeficitSurplus$
+    ];
 
-    const years = data.dimension.time.category.index as Record<string, number>;
-    const values = data.value as Record<string, number>;
-
-    const startYear = 2014;
-    const endYear = 2024;
-    const result: Array<[string, number | null]> = [];
-
-    for (let year = startYear; year <= endYear; year++) {
-      const yearKey = String(year);
-      const valueIndex = years[yearKey];
-      const actualValue = values[valueIndex];
-
-      result.push([yearKey, actualValue ?? null]);
-    }
-
-    return result;
+    datasets$.forEach((dataset$, index) => {
+      dataset$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+        if (data) this.updateChartWithData(data, index);
+      });
+    });
   }
 
   private updateChartWithData(data: IEstatDataset, dataIndex: number): void {
-    if (!this.hasValidData(data)) {
+    const yearsData = getAvailableYearsWithValues(data);
+    
+    if (yearsData.length === 0) {
       this.chartData.datasets[dataIndex].data = [];
-      
       this.chart?.update();
-
       return;
     }
 
-    const processedData = this.filterDataByYearAndValues(data);
-    const labels = processedData.map(([year]) => year);
-    const values = processedData.map(([, value]) => value);
+    const recentYears = yearsData.slice(-this.YEARS_TO_DISPLAY);
+    const labels = recentYears.map(item => item.year);
+    const values = recentYears.map(item => item.value);
 
-    // labels (2014-2024)
     if (dataIndex === 0) {
       this.chartData.labels = labels;
     }
@@ -200,19 +142,14 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.chart?.update();
   }
 
-
   hasChartData(): boolean {
-    return this.chartData &&
-      this.chartData.datasets &&
-      this.chartData.datasets.length > 0 &&
-      this.chartData.datasets.some(dataset =>
-        dataset.data && dataset.data.length > 0
-      );
+    return this.chartData.datasets.some(dataset => 
+      dataset.data && dataset.data.length > 0
+    );
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

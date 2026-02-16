@@ -34,4 +34,11 @@
       </div>
     </ng-template>
   </div>
+
+  <div *ngIf="hasChartData()" class="mt-4 text-right">
+    <span class="text-xs text-gray-400">
+      Source: Eurostat • {{ lastUpdated$ | async }}
+    </span>
+  </div>
+  
 </div>
