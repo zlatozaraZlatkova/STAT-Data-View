@@ -7,6 +7,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ChartComponent } from './chart.component';
 import { DataService } from '../data.service';
 import { IEstatDataset } from 'src/app/interfaces/metricData';
+import { getAvailableYearsWithValues, isMultiDimensional, processDataset } from 'src/app/shared/utils/dataset-processor';
 
 describe('ChartComponent', () => {
   let component: ChartComponent;
@@ -56,10 +57,6 @@ describe('ChartComponent', () => {
   });
 
   describe('Branch Coverage', () => {
-    it('should validate data', () => {
-      expect(component['hasValidData'](mockValidData)).toBe(true);
-      expect(component['hasValidData'](mockEmptyData)).toBe(false);
-    });
 
     it('should update chart with valid data', () => {
       component['updateChartWithData'](mockValidData, 0);
@@ -160,4 +157,74 @@ describe('ChartComponent', () => {
       );
     });
   });
+  describe('dataset-processor utils', () => {
+
+    describe('isMultiDimensional', () => {
+      it('should return true for multi-dimensional datasets', () => {
+        expect(isMultiDimensional([1, 1, 39, 1, 51])).toBe(true);
+        expect(isMultiDimensional([2, 3, 4])).toBe(true);
+      });
+
+      it('should return false for simple datasets', () => {
+        expect(isMultiDimensional([1])).toBe(false);
+        expect(isMultiDimensional([1, 1])).toBe(false);
+      });
+    });
+
+    describe('getAvailableYearsWithValues', () => {
+      it('should return empty array for invalid dataset', () => {
+        const result = getAvailableYearsWithValues(null as any);
+        expect(result).toEqual([]);
+      });
+
+      it('should extract years with values from simple dataset', () => {
+        const mockDataset: IEstatDataset = {
+          value: { 0: 100, 1: 200, 2: 300 },
+          dimension: {
+            time: {
+              category: {
+                index: { '2020': 0, '2021': 1, '2022': 2 }
+              }
+            }
+          },
+          size: [3]
+        } as any;
+
+        const result = getAvailableYearsWithValues(mockDataset);
+
+        expect(result.length).toBe(3);
+        expect(result[0]).toEqual({ year: '2020', value: 100 });
+        expect(result[1]).toEqual({ year: '2021', value: 200 });
+        expect(result[2]).toEqual({ year: '2022', value: 300 });
+      });
+    });
+
+    describe('processDataset', () => {
+      it('should return hasData false for empty dataset', () => {
+        const result = processDataset({} as any);
+        expect(result.hasData).toBe(false);
+      });
+
+      it('should process simple dataset correctly', () => {
+        const mockDataset: IEstatDataset = {
+          value: { 0: 100, 1: 200 },
+          dimension: {
+            time: {
+              category: {
+                index: { '2020': 0, '2021': 1 }
+              }
+            }
+          },
+          size: [2]
+        } as any;
+
+        const result = processDataset(mockDataset);
+
+        expect(result.hasData).toBe(true);
+        expect(result.currentValue).toBe(200);
+        expect(result.previousValue).toBe(100);
+      });
+    });
+  });
+
 });
