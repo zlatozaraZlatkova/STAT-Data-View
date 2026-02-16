@@ -1,89 +1,96 @@
-export interface ProcessedDataResult {
-  currentValue: number;
-  previousValue?: number;
-  hasData: boolean;
-}
+import { ProcessedDataResult, YearWithValue } from "src/app/interfaces/dataProcessor";
+import { IEstatDataset } from "src/app/interfaces/metricData";
+
+
 
 export function isMultiDimensional(size: number[]): boolean {
-  return (
-    size && size.length > 1 && size.some((s, i) => i < size.length - 1 && s > 1)
-  );
+  return size && size.length > 1 && size.some((s, i) => i < size.length - 1 && s > 1);
 }
+
+
+export function getAvailableYearsWithValues(
+  dataset: IEstatDataset
+): YearWithValue[] {
+  if (!dataset?.value || !dataset?.dimension?.time?.category?.index) {
+    return [];
+  }
+
+  const timeIndex = dataset.dimension.time.category.index;
+  const years = Object.keys(timeIndex).sort();
+  const values = dataset.value;
+  const size = dataset.size;
+
+  if (isMultiDimensional(size)) {
+    const timeSize = size[size.length - 1];
+    const valueKeys = Object.keys(values).map(Number);
+
+    return years
+      .map(year => {
+        const timeIdx = timeIndex[year];
+        const valueKey = valueKeys.find(key => key % timeSize === timeIdx);
+        return valueKey !== undefined && values[valueKey] !== undefined
+          ? { year, value: values[valueKey] }
+          : null;
+      })
+      .filter((item): item is YearWithValue => item !== null);
+  } else {
+    return years
+      .map(year => ({
+        year,
+        value: values[timeIndex[year]]
+      }))
+      .filter(item => item.value !== undefined && item.value !== null);
+  }
+}
+
+export function processDataset(dataset: IEstatDataset): ProcessedDataResult {
+  const yearsData = getAvailableYearsWithValues(dataset);
+
+  if (yearsData.length === 0) {
+    return { currentValue: 0, hasData: false };
+  }
+
+  const currentValue = yearsData[yearsData.length - 1].value;
+  const previousValue = yearsData.length >= 2 
+    ? yearsData[yearsData.length - 2].value 
+    : undefined;
+
+  return {
+    currentValue,
+    previousValue,
+    hasData: true
+  };
+}
+
 
 export function processMultiDimensionalData(
   years: string[],
   timeIndex: Record<string, number>,
   values: Record<string, number>,
-  size: number[],
+  size: number[]
 ): ProcessedDataResult {
-  const timeSize = size[size.length - 1];
-  const valueKeys = Object.keys(values)
-    .map(Number)
-    .sort((a, b) => a - b);
-
-  const availableYearIndices = valueKeys.map((key) => key % timeSize);
-
-  const availableYears = years
-    .map((year) => ({ year, index: timeIndex[year] }))
-    .filter((item) => availableYearIndices.includes(item.index))
-    .sort((a, b) => a.index - b.index);
-
-  if (availableYears.length === 0) {
-    return { currentValue: 0, hasData: false };
-  }
-
-  const currentYearData = availableYears[availableYears.length - 1];
-  const previousYearData =
-    availableYears.length >= 2
-      ? availableYears[availableYears.length - 2]
-      : null;
-
-  const currentValueKey = valueKeys.find(
-    (key) => key % timeSize === currentYearData.index,
-  );
-  const previousValueKey = previousYearData
-    ? valueKeys.find((key) => key % timeSize === previousYearData.index)
-    : undefined;
-
-  if (currentValueKey !== undefined && values[currentValueKey] !== undefined) {
-    return {
-      currentValue: values[currentValueKey],
-      previousValue:
-        previousValueKey !== undefined ? values[previousValueKey] : undefined,
-      hasData: true,
-    };
-  }
-
-  return { currentValue: 0, hasData: false };
+ 
+  const dataset = {
+    value: values,
+    dimension: { time: { category: { index: timeIndex } } },
+    size
+  } as IEstatDataset;
+  
+  return processDataset(dataset);
 }
+
 
 export function processSimpleData(
   years: string[],
   timeIndex: Record<string, number>,
-  values: Record<string, number>,
+  values: Record<string, number>
 ): ProcessedDataResult {
-  const availableYears = years
-    .map((year) => ({ year, index: timeIndex[year] }))
-    .filter(
-      (item) => values[item.index] !== undefined && values[item.index] !== null,
-    )
-    .sort((a, b) => a.index - b.index);
-
-  if (availableYears.length === 0) {
-    return { currentValue: 0, hasData: false };
-  }
-
-  const currentYearData = availableYears[availableYears.length - 1];
-  const previousYearData =
-    availableYears.length >= 2
-      ? availableYears[availableYears.length - 2]
-      : null;
-
-  return {
-    currentValue: values[currentYearData.index],
-    previousValue: previousYearData
-      ? values[previousYearData.index]
-      : undefined,
-    hasData: true,
-  };
+  
+  const dataset = {
+    value: values,
+    dimension: { time: { category: { index: timeIndex } } },
+    size: [1]
+  } as IEstatDataset;
+  
+  return processDataset(dataset);
 }
